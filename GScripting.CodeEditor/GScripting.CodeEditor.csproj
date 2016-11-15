@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{967853AE-B138-45A7-9713-867D82D367F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GScripting.CodeEditor</RootNamespace>
+    <AssemblyName>GScripting.CodeEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\lib\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeEditor\Breakpoint.cs" />
+    <Compile Include="CodeEditor\ICSharpCode\BookmarkBase.cs" />
+    <Compile Include="CodeEditor\ICSharpCode\IBookmarkMargin.cs" />
+    <Compile Include="CodeEditor\ICSharpCode\IconBarManager.cs" />
+    <Compile Include="CodeEditor\ICSharpCode\IconBarMargin.cs" />
+    <Compile Include="CodeEditor\ICSharpCode\ITextMarker.cs" />
+    <Compile Include="CodeEditor\ResolverCodeEditor.cs" />
+    <Compile Include="CodeEditor\ResourceImage.cs" />
+    <Compile Include="CodeEditor\TextMarkerService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodeEditor\Icons\Bookmarks\Bookmarks.pdn" />
+    <None Include="CodeEditor\Icons\Bookmarks\Breakpoint.pdn" />
+    <EmbeddedResource Include="CodeEditor\Python.xshd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeEditor\Icons\Bookmarks\Breakpoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\BreakpointConditional.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\ClearAll.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\CurrentLine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\DeleteAllBreakpoints.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\DeleteAllMarks.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\DeleteMark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\DisableAllBreakpoints.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\DisabledBreakpoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\EnableDisableAll.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\EnableDisableMark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\GotoNext.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\GotoNextInFile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\GotoNextInFolder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\GotoPrev.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\GotoPrevInFile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\GotoPrevInFolder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\NextBreakpoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\Pin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\PrevBreakpoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\ToggleMark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\UnhealthyBreakpoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Bookmarks\UnhealthyBreakpointConditional.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeEditor\Icons\Icons.32x32.EmptyFileIcon.png" />
+    <Content Include="CodeEditor\Icons\open-alt-icon.png" />
+    <Content Include="CodeEditor\Icons\Play-Green-Button-icon.png" />
+    <Content Include="CodeEditor\Icons\save-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GScripting\GScripting.csproj">
+      <Project>{ec912fa9-3b5f-47ea-bde6-3253bd6f4d6f}</Project>
+      <Name>GScripting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

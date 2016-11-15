@@ -1,0 +1,49 @@
+﻿A) Experience:
+-------------------------------------------------
+- Window management ==> use WeifenLuo docking manager <OK>
+- File load/save/save as.. <OK>
+- Bigger surface and scrolling (page size page) ==> use ImageBox from Cyotek <OK>
+- Code context menu: Copy/Paste
+- Toolbar:
+	* Save
+	* Undo/redo
+	* Play
+	* Comment / uncomment
+	* Indent / outdent
+
+- Colors (Color.White) and code-completion
+
+
+B) Errors:
+-------------------------------------------------
+- Errors window for editing <OK>
+- Continuous compilation & error marking on code <OK>
+
+
+C) Debugging & helps:
+-------------------------------------------------
+- Help for commands
+- Error sink during execution < show errors? stop and debugging...>
+- Scope window during debugging
+- Debugging
+- Toolbar/2:
+	* Play into
+	* Stop
+- Breakpoints
+- Code folding
+- Edit & continue ????
+
+- Text size for editor
+
+
+
+
+
+---------------------------------
+
+-
+- filename shown - * on modified
+- save as..
+- new icons please
+- better resolution or "vectorized"
+- 
