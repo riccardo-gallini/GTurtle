@@ -1,5 +1,4 @@
-﻿using GScripting;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace GScripting
@@ -51,7 +50,7 @@ namespace GScripting
             }
         }
 
-        public void timer_tick(object state)
+        private void timer_tick(object state)
         {
             if (lastParseRun != null)
             {
