@@ -22,9 +22,59 @@ namespace GScripting
         private bool request_stop = false;
         private AutoResetEvent pause_waiter;
         private DebugAction next_action;
-        //////////////
-        
+
         private Engine _engine;
+        private ExecutionStatus _executionStatus;
+        private string _source;
+
+        internal Action<DebugInfo> _debuggerStep;
+        internal Action<DebugInfo> _onTrace;
+        internal Action<DebugInfo> _onError;
+        internal Action<string> _onOutput;
+        internal Action<DebugInfo> _onScriptEnd;
+        internal Func<int, IBreakpoint> _onCheckBreakpoint;
+        //////////////
+
+        internal ExecutionContext(Engine Engine, ScriptScope VariableScope)
+        {
+            _engine = Engine;
+            _variableScope = VariableScope;
+            _defaultCommands = new Dictionary<string, object>();
+        }
+
+        //////////////
+
+        public void RegisterDebuggerStep(Action<DebugInfo> action)
+        {
+            _debuggerStep = action;
+        }
+
+        public void RegisterOnTrace(Action<DebugInfo> action)
+        {
+            _onTrace = action;
+        }
+                
+        public void RegisterOnError(Action<DebugInfo> action)
+        {
+            _onError = action;
+        }
+
+        public void RegisterOnOutput(Action<string> action)
+        {
+            _onOutput = action;
+        }
+
+        public void RegisterOnScriptEnd(Action<DebugInfo> action)
+        {
+            _onScriptEnd = action;
+        }
+
+        public void RegisterOnCheckBreakpoint(Func<int, IBreakpoint> func)
+        {
+            _onCheckBreakpoint = func;
+        }
+        
+        
         public Engine Engine
         {
             get
@@ -32,15 +82,7 @@ namespace GScripting
                 return _engine;
             }
         }
-        
-        public Action<DebugInfo> DebuggerStep;
-        public Action<DebugInfo> Trace;
-        public Action<DebugInfo> Error;
-        public Action<string> Output;
-        public Action<DebugInfo> ScriptEnd;
-        public Func<int, IBreakpoint> GetBreakpoint;
-
-        private ExecutionStatus _executionStatus;
+                
         public ExecutionStatus ExecutionStatus
         {
             get
@@ -48,8 +90,7 @@ namespace GScripting
                 return _executionStatus;
             }
         }
-
-        private string _source;
+                
         public string Source
         {
             get
@@ -63,13 +104,6 @@ namespace GScripting
                     _source = value;
                 }
             }
-        }
-
-        internal ExecutionContext(Engine Engine, ScriptScope VariableScope)
-        {
-            _engine = Engine;
-            _variableScope = VariableScope;
-            _defaultCommands = new Dictionary<string, object>();
         }
 
         public void RegisterCommands(Dictionary<string, object> commands)
@@ -147,10 +181,7 @@ namespace GScripting
 
         private void resume_execution()
         {
-            if (pause_waiter != null)
-            {
-                pause_waiter.Set();
-            }
+            pause_waiter?.Set();
         }
 
         private void pause_execution()
@@ -190,37 +221,31 @@ namespace GScripting
                 }
                 catch (Exception ex)
                 {
-                    Error?.Invoke(DebugInfo.CreateError(ex, this));
+                    _onError?.Invoke(DebugInfo.CreateError(ex, this));
                 }
                 finally
                 {
                     this._executionStatus = ExecutionStatus.Stopped;
                     Engine.scriptEngine.SetTrace(null);
                 }
-                ScriptEnd?.Invoke(DebugInfo.CreateEmpty(this));
+                _onScriptEnd?.Invoke(DebugInfo.CreateEmpty(this));
                                 
             }
             
         }
 
-        private IBreakpoint _getBreakpoint(int line)
-        {
-            if (GetBreakpoint==null) { return null; }
-            return GetBreakpoint(line);
-        }
-
         private void checkDebuggerPause(DebugInfo info)
         {
-            if (DebuggerStep==null) { return; }
+            if (_debuggerStep==null) { return; }
             
             if (request_stop)
             {
 
             }
-            else if (request_pause || _getBreakpoint(info.CurrentLine)!=null)
+            else if (request_pause || _onCheckBreakpoint?.Invoke(info.CurrentLine)!=null)
             {
                 _executionStatus = ExecutionStatus.Paused;
-                DebuggerStep(info);
+                _debuggerStep(info);
                 pause_execution();
                
                 _executionStatus = ExecutionStatus.InternalTrace;
@@ -234,7 +259,7 @@ namespace GScripting
 
             var info = DebugInfo.Create(frame, this);
             checkDebuggerPause(info);
-            Trace?.Invoke(info);
+            _onTrace?.Invoke(info);
 
             if (next_action == DebugAction.StepInto)
             {

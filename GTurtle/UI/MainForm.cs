@@ -30,7 +30,7 @@ namespace GTurtle
 
         //
         private WorkbenchStatus _status;
-        private ExecutionContext executionScope;
+        private ExecutionContext executionContext;
 
         private string script_filename = "";
 
@@ -244,7 +244,7 @@ namespace GTurtle
             }
             else if (_status == WorkbenchStatus.Paused)
             {
-                executionScope.Continue();
+                executionContext.Continue();
             }
         }
 
@@ -252,7 +252,7 @@ namespace GTurtle
         {
             if (_status == WorkbenchStatus.Running)
             {
-                executionScope.Stop();
+                executionContext.Stop();
             }
             else if (_status == WorkbenchStatus.ExecutionError)
             {
@@ -262,7 +262,7 @@ namespace GTurtle
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            executionScope.RequestPause();
+            executionContext.RequestPause();
         }
 
         private async void btnStepInto_Click(object sender, EventArgs e)
@@ -273,7 +273,7 @@ namespace GTurtle
             }
             else if (_status == WorkbenchStatus.Paused)
             {
-                executionScope.StepInto();
+                executionContext.StepInto();
             }
 
         }
@@ -286,13 +286,13 @@ namespace GTurtle
             }
             else if (_status == WorkbenchStatus.Paused)
             {
-                executionScope.StepOver();
+                executionContext.StepOver();
             }
         }
 
         private void btnStepOut_Click(object sender, EventArgs e)
         {
-            executionScope.StepOut();
+            executionContext.StepOut();
         }
 
 
@@ -307,20 +307,20 @@ namespace GTurtle
                 //prepare the turtle
                 var turtle = new Turtle(g, surface.Image.Size, surfaceWindow.ImageBox);
 
-                executionScope = Engine.CreateExecutionContext();
-                executionScope.Source = editor.Text;
-                executionScope.GetBreakpoint = getBreakpointUI;
-                executionScope.RegisterCommands(turtle.GetCommands());
-                executionScope.DebuggerStep = debuggerUpdateUI;
-                executionScope.Output = outputUpdateUI;
-                executionScope.Error = errorUpdateUI;
-                executionScope.ScriptEnd = scriptEndUpdateUI;
+                executionContext = Engine.CreateExecutionContext();
+                executionContext.Source = editor.Text;
+                executionContext.RegisterCommands(turtle.GetCommands());
+                executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
+                executionContext.RegisterDebuggerStep(debuggerUpdateUI);
+                executionContext.RegisterOnOutput(outputUpdateUI);
+                executionContext.RegisterOnError(errorUpdateUI);
+                executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
                 
                                 
-                if (requestPause) { executionScope.RequestPause(); }
+                if (requestPause) { executionContext.RequestPause(); }
 
                 //exec the script
-                await executionScope.RunAsync();
+                await executionContext.RunAsync();
             }
 
             surfaceWindow.ImageBox.Invalidate();

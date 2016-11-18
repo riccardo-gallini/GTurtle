@@ -22,12 +22,12 @@ namespace GScripting
 
         public override void Write(char value)
         {
-            _executionScope.Output?.Invoke(value.ToString());
+            _executionScope._onOutput?.Invoke(value.ToString());
         }
 
         public override void Write(string value)
         {
-            _executionScope.Output?.Invoke(value);
+            _executionScope._onOutput?.Invoke(value);
         }
     }
 }
