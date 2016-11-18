@@ -59,7 +59,7 @@ namespace GTurtle
 
             //parser service stuff
             parserService = Engine.CreateParserService();
-            parserService.RegisterGetSource(codeEditorWindow.GetSourceUI);
+            parserService.RegisterGetSource(getSourceUI);
             parserService.RegisterOnParseFinished(parseFinishedUI);
 
             //setup workbench
@@ -192,9 +192,17 @@ namespace GTurtle
 
 
         #endregion
-        
-        
 
+
+        private string getSourceUI()
+        {
+            return this.InvokeFunc(() => codeEditorWindow.EditorText);
+        }
+
+        private IBreakpoint getBreakpointUI(int line)
+        {
+            return this.InvokeFunc(() => codeEditorWindow.GetBreakpoint(line));
+        }
 
 
 
@@ -295,9 +303,9 @@ namespace GTurtle
                 var turtle = new Turtle(g, surface.Image.Size, surfaceWindow.ImageBox);
 
                 executionContext = Engine.CreateExecutionContext();
-                executionContext.RegisterGetSource(codeEditorWindow.GetSourceUI);
+                executionContext.RegisterGetSource(getSourceUI);
                 executionContext.RegisterCommands(turtle.GetCommands());
-                executionContext.RegisterOnCheckBreakpoint(codeEditorWindow.GetBreakpointUI);
+                executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
                 executionContext.RegisterDebuggerStep(debuggerUpdateUI);
                 executionContext.RegisterOnOutput(outputUpdateUI);
                 executionContext.RegisterOnError(errorUpdateUI);

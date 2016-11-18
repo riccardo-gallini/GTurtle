@@ -4,6 +4,7 @@ using System.Windows.Forms.Integration;
 using System.Collections.Generic;
 using GScripting;
 using GScripting.CodeEditor;
+using System;
 
 namespace GTurtle
 {
@@ -152,15 +153,17 @@ namespace GTurtle
             editor.MarkDebugLine(line, isError, message);
         }
 
-        public string GetSourceUI()
+        public string EditorText
         {
-            return this.InvokeFunc(() => editor.Text);
+            get
+            {
+                return editor.Text;
+            }
         }
 
-        public IBreakpoint GetBreakpointUI(int line)
+        internal IBreakpoint GetBreakpoint(int line)
         {
-            return this.InvokeFunc(() => editor.GetBreakpoint(line));
+            return editor.GetBreakpoint(line);
         }
-
     }
 }
