@@ -218,6 +218,7 @@ namespace GScripting
                 try
                 {
                     scriptSource.Execute(_variableScope);
+                    _onScriptEnd?.Invoke(DebugInfo.CreateEmpty(this));
                 }
                 catch (Exception ex)
                 {
@@ -228,7 +229,7 @@ namespace GScripting
                     this._executionStatus = ExecutionStatus.Stopped;
                     Engine.scriptEngine.SetTrace(null);
                 }
-                _onScriptEnd?.Invoke(DebugInfo.CreateEmpty(this));
+                
                                 
             }
             
