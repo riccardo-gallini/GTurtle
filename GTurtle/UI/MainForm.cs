@@ -33,7 +33,8 @@ namespace GTurtle
         public MainForm()
         {
             InitializeComponent();
-
+            this.KeyPreview = true;
+            
             //the script engine
             Engine = new GScripting.Engine();
 
@@ -193,19 +194,13 @@ namespace GTurtle
 
         #endregion
 
-
+        #region " PARSER "
+        
         private string getSourceUI()
         {
             return this.InvokeFunc(() => codeEditorWindow.EditorText);
         }
-
-        private IBreakpoint getBreakpointUI(int line)
-        {
-            return this.InvokeFunc(() => codeEditorWindow.GetBreakpoint(line));
-        }
-
-
-
+        
         private void parseFinishedUI(ParseInfo info)
         {
             this.InvokeAction(
@@ -228,19 +223,43 @@ namespace GTurtle
 
                 });
         }
-        
-        #region " PLAY & DEBUG "
 
+        #endregion
+
+        #region " TOOLBAR "
+
+        private async void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                await PlayUI();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F10)
+            {
+                await StepOverUI();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F11)
+            {
+                await StepIntoUI();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.F9)
+            {
+                codeEditorWindow.ToggleBreakpoint();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.S && e.Control)
+            {
+                save();
+                e.Handled = true;
+            }
+        }
+        
         private async void btnPlay_Click(object sender, EventArgs e)
         {
-            if (_status == WorkbenchStatus.Editing)
-            {
-                await Play(false);
-            }
-            else if (_status == WorkbenchStatus.Paused)
-            {
-                executionContext.Continue();
-            }
+            await PlayUI();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -262,27 +281,12 @@ namespace GTurtle
 
         private async void btnStepInto_Click(object sender, EventArgs e)
         {
-            if (_status == WorkbenchStatus.Editing)
-            {
-                await Play(true);
-            }
-            else if (_status == WorkbenchStatus.Paused)
-            {
-                executionContext.StepInto();
-            }
-
+            await StepIntoUI();
         }
 
         private async void btnStepOver_Click(object sender, EventArgs e)
         {
-            if (_status == WorkbenchStatus.Editing)
-            {
-                await Play(true);
-            }
-            else if (_status == WorkbenchStatus.Paused)
-            {
-                executionContext.StepOver();
-            }
+            await StepOverUI();
         }
 
         private void btnStepOut_Click(object sender, EventArgs e)
@@ -290,8 +294,47 @@ namespace GTurtle
             executionContext.StepOut();
         }
 
+        #endregion
 
-        public async Task Play(bool requestPause)
+        #region " PLAY & DEBUG "
+
+        private async Task StepIntoUI()
+        {
+            if (_status == WorkbenchStatus.Editing)
+            {
+                await doPlay(true);
+            }
+            else if (_status == WorkbenchStatus.Paused)
+            {
+                executionContext.StepInto();
+            }
+        }
+
+        private async Task StepOverUI()
+        {
+            if (_status == WorkbenchStatus.Editing)
+            {
+                await doPlay(true);
+            }
+            else if (_status == WorkbenchStatus.Paused)
+            {
+                executionContext.StepOver();
+            }
+        }
+
+        private async Task PlayUI()
+        {
+            if (_status == WorkbenchStatus.Editing)
+            {
+                await doPlay(false);
+            }
+            else if (_status == WorkbenchStatus.Paused)
+            {
+                executionContext.Continue();
+            }
+        }
+
+        private async Task doPlay(bool requestPause)
         {
             setWorkbenchStatusUI(WorkbenchStatus.Running);
 
@@ -310,7 +353,6 @@ namespace GTurtle
                 executionContext.RegisterOnOutput(outputUpdateUI);
                 executionContext.RegisterOnError(errorUpdateUI);
                 executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
-                
                                 
                 if (requestPause) { executionContext.RequestPause(); }
 
@@ -344,6 +386,11 @@ namespace GTurtle
                     });
         }
 
+        private IBreakpoint getBreakpointUI(int line)
+        {
+            return this.InvokeFunc(() => codeEditorWindow.GetBreakpoint(line));
+        }
+
         private void errorUpdateUI(DebugInfo info)
         {
             this.InvokeAction(
@@ -362,7 +409,7 @@ namespace GTurtle
         }
 
         #endregion
-
+        
         #region " FILE MANAGEMENT "
 
         private void btnNewScript_Click(object sender, EventArgs e)
@@ -475,9 +522,10 @@ namespace GTurtle
 
     }
 
-    #endregion
 
-}
+        #endregion
+        
+    }
 
     public enum WorkbenchStatus
     {

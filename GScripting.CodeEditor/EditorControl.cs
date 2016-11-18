@@ -14,6 +14,7 @@ using System.Windows;
 using ICSharpCode.AvalonEdit.Document;
 using System.Windows.Controls;
 using GScripting.CodeEditor.Internal;
+using System.Collections.Generic;
 
 namespace GScripting.CodeEditor
 {
@@ -91,6 +92,24 @@ namespace GScripting.CodeEditor
             return (IBreakpoint) bookmarkMargin.GetBookmarkFromLine(line);
         }
         
+        public void ToggleBreakpoint()
+        {
+            var current_line = Document.GetLineByOffset(base.CaretOffset).LineNumber;
+
+            if (current_line>0)
+            {
+                var b = bookmarkMargin.GetBookmarkFromLine(current_line);
+
+                if (b == null)
+                {
+                    bookmarkMargin.AddBreakpoint(current_line);
+                }
+                else
+                {
+                    bookmarkMargin.Bookmarks.Remove(b);
+                }
+            }
+        }
 
 
         #endregion

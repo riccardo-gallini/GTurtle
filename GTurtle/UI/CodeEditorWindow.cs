@@ -11,7 +11,7 @@ namespace GTurtle
     public partial class CodeEditorWindow : DockContent
     {
         public EditorControl editor;
-        public ElementHost wpf_host;
+        public KeyPreviewElementHost wpf_host;
 
         private MainForm _mainForm;
         private string script_file_name = "";
@@ -22,7 +22,7 @@ namespace GTurtle
 
             this._mainForm = mainForm;
 
-            wpf_host = new ElementHost();
+            wpf_host = new KeyPreviewElementHost();
             this.Controls.Add(wpf_host);
             wpf_host.Dock = DockStyle.Fill;
 
@@ -161,9 +161,14 @@ namespace GTurtle
             }
         }
 
-        internal IBreakpoint GetBreakpoint(int line)
+        public IBreakpoint GetBreakpoint(int line)
         {
             return editor.GetBreakpoint(line);
+        }
+
+        public void ToggleBreakpoint()
+        {
+            editor.ToggleBreakpoint();
         }
     }
 }

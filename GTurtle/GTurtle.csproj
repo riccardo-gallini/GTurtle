@@ -63,13 +63,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\Util\KeyPreviewElementHost.cs" />
     <Compile Include="UI\WatchWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\WatchWindow.Designer.cs">
       <DependentUpon>WatchWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\ThreadUtil\InvokeExtensions.cs" />
+    <Compile Include="UI\Util\InvokeExtensions.cs" />
     <Compile Include="UI\CodeErrorsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
