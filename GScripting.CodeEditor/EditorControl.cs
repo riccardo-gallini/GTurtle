@@ -144,7 +144,7 @@ namespace GScripting.CodeEditor
             textMarkerService.RemoveAll((m) => (ResolverMarkerType)m.Tag == ResolverMarkerType.DebugCurrentLine);
         }
 
-        public void MarkCurrentDebugLine(int line, bool isError, string message = "")
+        public void MarkDebugLine(int line, bool isError, string message = "")
         {
             RemoveAllDebugMarks();
 

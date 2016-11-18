@@ -33,6 +33,7 @@ namespace GScripting
         internal Action<string> _onOutput;
         internal Action<DebugInfo> _onScriptEnd;
         internal Func<int, IBreakpoint> _onCheckBreakpoint;
+        internal Func<string> _getSource;
         //////////////
 
         internal ExecutionContext(Engine Engine, ScriptScope VariableScope)
@@ -74,6 +75,10 @@ namespace GScripting
             _onCheckBreakpoint = func;
         }
         
+        public void RegisterGetSource(Func<string> func)
+        {
+            _getSource = func;
+        }
         
         public Engine Engine
         {
@@ -96,13 +101,6 @@ namespace GScripting
             get
             {
                 return _source;
-            }
-            set
-            {
-                if (_executionStatus==ExecutionStatus.Stopped)
-                {
-                    _source = value;
-                }
             }
         }
 
@@ -205,6 +203,7 @@ namespace GScripting
 
         private void runScript()
         {
+            _source = _getSource();
             ScriptSource scriptSource = Engine.scriptEngine.CreateScriptSourceFromString(_source, SourceCodeKind.File);
 
             using (var execOutput = new ExecutionOutput(this))
@@ -229,7 +228,6 @@ namespace GScripting
                     this._executionStatus = ExecutionStatus.Stopped;
                     Engine.scriptEngine.SetTrace(null);
                 }
-                
                                 
             }
             

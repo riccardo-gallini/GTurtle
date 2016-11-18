@@ -9,10 +9,11 @@ namespace GTurtle
 {
     public partial class CodeEditorWindow : DockContent
     {
-        public EditorControl Editor;
+        public EditorControl editor;
         public ElementHost wpf_host;
 
         private MainForm _mainForm;
+        private string script_file_name = "";
 
         public CodeEditorWindow(MainForm mainForm)
         {
@@ -27,26 +28,138 @@ namespace GTurtle
             //THIS IS NEEDED IF HOSTED INSIDE MDI!!
             wpf_host.TabStop = false;
 
-            Editor = new EditorControl();
-            wpf_host.Child = Editor;
+            editor = new EditorControl();
+            wpf_host.Child = editor;
+                        
+            editor.TextChanged += Editor_TextChanged;
+
+            updateWindowCaption();
                         
         }
-               
+
+        private void Editor_TextChanged(object sender, System.EventArgs e)
+        {
+            updateWindowCaption();
+        }
 
         public void MarkErrors(IList<ScriptError> errorList)
         {
-            Editor.RemoveAllErrorMarks();
+            editor.RemoveAllErrorMarks();
 
             foreach(var err in errorList)
             {
-                Editor.MarkError(err.SpanStartIndex, err.SpanLength, err.Message);
+                editor.MarkError(err.SpanStartIndex, err.SpanLength, err.Message);
             }
         }
               
         public void NavigateToLine(int line)
         {
-            Editor.NavigateToLine(line);
-            Editor.Focus();
+            editor.NavigateToLine(line);
+            editor.Focus();
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return System.IO.Path.GetFileName(script_file_name);
+            }
+        }
+
+        private void setFileName(string file_name)
+        {
+            script_file_name = file_name;
+            updateWindowCaption();
+        }
+
+        private void updateWindowCaption()
+        {
+            string caption;
+            
+            if (this.FileName != "")
+            {
+                caption = this.FileName;
+            }
+            else
+            {
+                caption = "New Script";
+            }
+
+            if (this.IsModified)
+            {
+                caption += "*";
+            }
+
+            this.TabText = caption;
+            this.Text = caption;
+        }
+
+        public void LoadFile(string file_name)
+        {
+            editor.Load(file_name);
+            setFileName(file_name);
+        }
+
+        public void SaveFileAs(string file_name)
+        {
+            editor.Save(file_name);
+            setFileName(file_name);
+        }
+
+        public void SaveFile()
+        {
+            if (script_file_name != "")
+            {
+                editor.Save(script_file_name);
+                updateWindowCaption();
+            }
+        }
+
+        public void NewFile()
+        {
+            editor.Clear();
+            editor.IsModified = false;
+            setFileName("");
+        }
+
+        public bool IsModified
+        {
+            get
+            {
+                return editor.IsModified;
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                return editor.IsReadOnly;
+            }
+            set
+            {
+                editor.IsReadOnly = value;
+            }
+        }
+
+        public void RemoveAllDebugMarks()
+        {
+            editor.RemoveAllDebugMarks();
+        }
+
+        public void MarkDebugLine(int line, bool isError, string message = "")
+        {
+            editor.MarkDebugLine(line, isError, message);
+        }
+
+        public string GetSourceUI()
+        {
+            return this.InvokeFunc(() => editor.Text);
+        }
+
+        public IBreakpoint GetBreakpointUI(int line)
+        {
+            return this.InvokeFunc(() => editor.GetBreakpoint(line));
         }
 
     }

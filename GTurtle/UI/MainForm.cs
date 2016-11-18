@@ -1,6 +1,5 @@
 ﻿using Cyotek.Windows.Forms;
 using GScripting;
-using GScripting.CodeEditor;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -24,16 +23,13 @@ namespace GTurtle
         public WatchWindow watchWindow;
 
         //
-        private EditorControl editor;
         private ImageBox surface;
         private ParserService parserService;
 
         //
         private WorkbenchStatus _status;
         private ExecutionContext executionContext;
-
-        private string script_filename = "";
-
+        
         public MainForm()
         {
             InitializeComponent();
@@ -55,7 +51,6 @@ namespace GTurtle
             watchWindow.Show(dockPanel, DockState.DockBottom);
 
             //editor stuff
-            editor = codeEditorWindow.Editor;
             surface = surfaceWindow.ImageBox;
 
             //surface sizes
@@ -64,8 +59,8 @@ namespace GTurtle
 
             //parser service stuff
             parserService = Engine.CreateParserService();
-            parserService.GetSource = getSourceUI;
-            parserService.ParseFinished = parseFinishedUI;
+            parserService.RegisterGetSource(codeEditorWindow.GetSourceUI);
+            parserService.RegisterOnParseFinished(parseFinishedUI);
 
             //setup workbench
             setWorkbenchStatusUI(WorkbenchStatus.Editing);
@@ -80,7 +75,7 @@ namespace GTurtle
 
             if (status == WorkbenchStatus.Editing)
             {
-                editor.IsReadOnly = false;
+                codeEditorWindow.IsReadOnly = false;
                 this.btnSaveScript.Enabled = true;
                 this.btnOpenScript.Enabled = true;
                 this.btnPlay.Enabled = true;
@@ -92,7 +87,7 @@ namespace GTurtle
 
                 parserService.Start();
 
-                editor.RemoveAllDebugMarks();
+                codeEditorWindow.RemoveAllDebugMarks();
                 watchWindow.Clear();
 
                 this.statusStrip.BackColor = COLOR_BLUE;
@@ -104,7 +99,7 @@ namespace GTurtle
             }
             else if (status == WorkbenchStatus.Running)
             {
-                editor.IsReadOnly = true;
+                codeEditorWindow.IsReadOnly = true;
                 this.btnSaveScript.Enabled = true;
                 this.btnOpenScript.Enabled = false;
                 this.btnPlay.Enabled = false;
@@ -116,7 +111,7 @@ namespace GTurtle
 
                 parserService.Stop();
 
-                editor.RemoveAllDebugMarks();
+                codeEditorWindow.RemoveAllDebugMarks();
 
                 this.statusStrip.BackColor = COLOR_ORANGE;
                 this.statusStrip.ForeColor = Color.White;
@@ -127,7 +122,7 @@ namespace GTurtle
             }
             else if (status == WorkbenchStatus.Paused)
             {
-                editor.IsReadOnly = true;
+                codeEditorWindow.IsReadOnly = true;
                 this.btnSaveScript.Enabled = true;
                 this.btnOpenScript.Enabled = false;
                 this.btnPlay.Enabled = true;
@@ -148,7 +143,7 @@ namespace GTurtle
             }
             else if (status == WorkbenchStatus.ExecutionError)
             {
-                editor.IsReadOnly = true;
+                codeEditorWindow.IsReadOnly = true;
                 this.btnSaveScript.Enabled = true;
                 this.btnOpenScript.Enabled = false;
                 this.btnPlay.Enabled = false;
@@ -169,7 +164,7 @@ namespace GTurtle
             }
             else if (status == WorkbenchStatus.ParserError)
             {
-                editor.IsReadOnly = false;
+                codeEditorWindow.IsReadOnly = false;
                 this.btnSaveScript.Enabled = true;
                 this.btnOpenScript.Enabled = true;
                 this.btnPlay.Enabled = false;
@@ -181,7 +176,7 @@ namespace GTurtle
 
                 parserService.Start();
 
-                editor.RemoveAllDebugMarks();
+                codeEditorWindow.RemoveAllDebugMarks();
                 watchWindow.Clear();
 
                 this.statusStrip.BackColor = COLOR_RED;
@@ -198,18 +193,10 @@ namespace GTurtle
 
         #endregion
         
-        private string getSourceUI()
-        {
-            string source = "";
-            this.InvokeAction(() => source = editor.Text);
-            return source;
-        }
+        
 
 
-        private IBreakpoint getBreakpointUI(int line)
-        {
-            return this.InvokeFunc(() => editor.GetBreakpoint(line));
-        }
+
 
         private void parseFinishedUI(ParseInfo info)
         {
@@ -308,9 +295,9 @@ namespace GTurtle
                 var turtle = new Turtle(g, surface.Image.Size, surfaceWindow.ImageBox);
 
                 executionContext = Engine.CreateExecutionContext();
-                executionContext.Source = editor.Text;
+                executionContext.RegisterGetSource(codeEditorWindow.GetSourceUI);
                 executionContext.RegisterCommands(turtle.GetCommands());
-                executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
+                executionContext.RegisterOnCheckBreakpoint(codeEditorWindow.GetBreakpointUI);
                 executionContext.RegisterDebuggerStep(debuggerUpdateUI);
                 executionContext.RegisterOnOutput(outputUpdateUI);
                 executionContext.RegisterOnError(errorUpdateUI);
@@ -342,7 +329,7 @@ namespace GTurtle
             this.InvokeAction(
                 () =>
                     {
-                        editor.MarkCurrentDebugLine(info.CurrentLine, isError:false);
+                        codeEditorWindow.MarkDebugLine(info.CurrentLine, isError:false);
                         surfaceWindow.ImageBox.Invalidate();
                         watchWindow.ShowScope(info.ExecutionScope);
                         setWorkbenchStatusUI(WorkbenchStatus.Paused);
@@ -354,7 +341,7 @@ namespace GTurtle
             this.InvokeAction(
                 () =>
                 {
-                    editor.MarkCurrentDebugLine(info.CurrentLine, info.IsError, message:info.Message);
+                    codeEditorWindow.MarkDebugLine(info.CurrentLine, info.IsError, message:info.Message);
                     surfaceWindow.ImageBox.Invalidate();
                     watchWindow.ShowScope(info.ExecutionScope);
                     setWorkbenchStatusUI(WorkbenchStatus.ExecutionError);
@@ -374,8 +361,7 @@ namespace GTurtle
         {
             if (check_modified())
             {
-                editor.Clear();
-                script_filename = "";
+                codeEditorWindow.NewFile();
             }
         }
 
@@ -388,12 +374,15 @@ namespace GTurtle
                 file_dialog.CheckPathExists = true;
                 file_dialog.AddExtension = true;
                 file_dialog.DefaultExt = "*.py";
+                file_dialog.AutoUpgradeEnabled = true;
+                file_dialog.Filter = "Python Scripts (*.py)|*.py|Any file (*.*)|*.*";
+                file_dialog.ValidateNames = true;
                 file_dialog.Multiselect = false;
                 var resp = file_dialog.ShowDialog();
 
                 if (resp == DialogResult.OK)
                 {
-                    editor.Load(file_dialog.FileName);
+                    codeEditorWindow.LoadFile(file_dialog.FileName);
                 }
 
             }
@@ -401,7 +390,7 @@ namespace GTurtle
 
         private bool check_modified()
         {
-            if (editor.IsModified)
+            if (codeEditorWindow.IsModified)
             {
                 var resp = MessageBox.Show("Want to save your changes?", "Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
@@ -424,25 +413,28 @@ namespace GTurtle
 
         private void save()
         {
-            if (script_filename == "")
+            if (codeEditorWindow.FileName == "")
             {
                 var file_dialog = new SaveFileDialog();
                 file_dialog.CheckFileExists = false;
                 file_dialog.CheckPathExists = true;
                 file_dialog.AddExtension = true;
                 file_dialog.DefaultExt = "*.py";
+                file_dialog.AutoUpgradeEnabled = true;
+                file_dialog.Filter = "Python Scripts (*.py)|*.py|Any file (*.*)|*.*";
+                file_dialog.ValidateNames = true;
                 file_dialog.OverwritePrompt = true;
                 var resp = file_dialog.ShowDialog();
 
                 if (resp == DialogResult.OK)
                 {
-                    script_filename = file_dialog.FileName;
+                    codeEditorWindow.SaveFileAs(file_dialog.FileName);
                 }
             }
 
-            if (script_filename != "")
+            if (codeEditorWindow.FileName != "")
             {
-                editor.Save(script_filename);
+                codeEditorWindow.SaveFile();
             }
         }
 
@@ -450,7 +442,7 @@ namespace GTurtle
         {
             save();
         }
-
+        
         #endregion
 
         #region " SURFACE "

@@ -5,8 +5,8 @@ namespace GScripting
 {
     public class ParserService
     {
-        public Func<string> GetSource;
-        public Action<ParseInfo> ParseFinished;
+        private Func<string> getSource;
+        private Action<ParseInfo> parseFinished;
         private Engine _engine;
 
         private System.Threading.Timer timer;
@@ -15,6 +15,16 @@ namespace GScripting
                 
         public int ParseFrequency { get; set; }
         
+        public void RegisterGetSource(Func<string> func)
+        {
+            getSource = func;
+        }
+
+        public void RegisterOnParseFinished(Action<ParseInfo> action)
+        {
+            parseFinished = action;
+        }
+
         internal ParserService(Engine Engine)
         {
             _engine = Engine;
@@ -32,7 +42,7 @@ namespace GScripting
         
         public void Start()
         {
-            if (ParseFinished==null || GetSource==null) { return; }
+            if (parseFinished==null || getSource==null) { return; }
 
             if (!_isRunning)
             {
@@ -60,14 +70,14 @@ namespace GScripting
             }
             lastParseRun = null;
 
-            var source = GetSource();
+            var source = getSource();
 
             if (source != _sourceSnapshot)
             {
                 _sourceSnapshot = source;
 
                 lastParseRun = Task.Run(() => _engine.Parse(_sourceSnapshot))
-                                   .ContinueWith((bgTask) => ParseFinished(bgTask.Result));
+                                   .ContinueWith((bgTask) => parseFinished(bgTask.Result));
             }
         }
 
