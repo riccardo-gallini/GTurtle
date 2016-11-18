@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ICSharpCode.SharpDevelop.Bookmarks
+namespace GScripting.CodeEditor.Internal
 {
 	/// <summary>
 	/// The bookmark margin.
 	/// </summary>
-	public interface IBookmarkMargin
+	internal interface IBookmarkMargin
 	{
 		/// <summary>
 		/// Gets the list of bookmarks.

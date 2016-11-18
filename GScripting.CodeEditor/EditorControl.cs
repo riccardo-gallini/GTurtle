@@ -1,11 +1,8 @@
 ﻿using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using ICSharpCode.SharpDevelop.Editor;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Media;
 using System.IO;
@@ -16,15 +13,14 @@ using System.Xml;
 using System.Windows;
 using ICSharpCode.AvalonEdit.Document;
 using System.Windows.Controls;
-using ICSharpCode.SharpDevelop.Bookmarks;
-using GScripting;
+using GScripting.CodeEditor.Internal;
 
-namespace MResolver.UI.CodeEditor
+namespace GScripting.CodeEditor
 {
-    public class ResolverCodeEditor : TextEditor
+    public class EditorControl : TextEditor
     {
         
-        public ResolverCodeEditor() : base()
+        public EditorControl() : base()
         {
             this.ShowLineNumbers = false;
             this.FontFamily = new FontFamily("Consolas");

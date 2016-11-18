@@ -48,96 +48,96 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeEditor\Breakpoint.cs" />
-    <Compile Include="CodeEditor\ICSharpCode\BookmarkBase.cs" />
-    <Compile Include="CodeEditor\ICSharpCode\IBookmarkMargin.cs" />
-    <Compile Include="CodeEditor\ICSharpCode\IconBarManager.cs" />
-    <Compile Include="CodeEditor\ICSharpCode\IconBarMargin.cs" />
-    <Compile Include="CodeEditor\ICSharpCode\ITextMarker.cs" />
-    <Compile Include="CodeEditor\ResolverCodeEditor.cs" />
-    <Compile Include="CodeEditor\ResourceImage.cs" />
-    <Compile Include="CodeEditor\TextMarkerService.cs" />
+    <Compile Include="Breakpoint.cs" />
+    <Compile Include="Internal\BookmarkBase.cs" />
+    <Compile Include="Internal\IBookmarkMargin.cs" />
+    <Compile Include="Internal\IconBarManager.cs" />
+    <Compile Include="Internal\IconBarMargin.cs" />
+    <Compile Include="Internal\ITextMarker.cs" />
+    <Compile Include="EditorControl.cs" />
+    <Compile Include="ResourceImage.cs" />
+    <Compile Include="Internal\TextMarkerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CodeEditor\Icons\Bookmarks\Bookmarks.pdn" />
-    <None Include="CodeEditor\Icons\Bookmarks\Breakpoint.pdn" />
-    <EmbeddedResource Include="CodeEditor\Python.xshd" />
+    <None Include="Icons\Bookmarks\Bookmarks.pdn" />
+    <None Include="Icons\Bookmarks\Breakpoint.pdn" />
+    <EmbeddedResource Include="Python.xshd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CodeEditor\Icons\Bookmarks\Breakpoint.png">
+    <Content Include="Icons\Bookmarks\Breakpoint.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\BreakpointConditional.png">
+    <Content Include="Icons\Bookmarks\BreakpointConditional.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\ClearAll.png">
+    <Content Include="Icons\Bookmarks\ClearAll.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\CurrentLine.png">
+    <Content Include="Icons\Bookmarks\CurrentLine.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\DeleteAllBreakpoints.PNG">
+    <Content Include="Icons\Bookmarks\DeleteAllBreakpoints.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\DeleteAllMarks.png">
+    <Content Include="Icons\Bookmarks\DeleteAllMarks.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\DeleteMark.png">
+    <Content Include="Icons\Bookmarks\DeleteMark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\DisableAllBreakpoints.PNG">
+    <Content Include="Icons\Bookmarks\DisableAllBreakpoints.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\DisabledBreakpoint.png">
+    <Content Include="Icons\Bookmarks\DisabledBreakpoint.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\EnableDisableAll.png">
+    <Content Include="Icons\Bookmarks\EnableDisableAll.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\EnableDisableMark.png">
+    <Content Include="Icons\Bookmarks\EnableDisableMark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\GotoNext.png">
+    <Content Include="Icons\Bookmarks\GotoNext.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\GotoNextInFile.png">
+    <Content Include="Icons\Bookmarks\GotoNextInFile.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\GotoNextInFolder.png">
+    <Content Include="Icons\Bookmarks\GotoNextInFolder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\GotoPrev.png">
+    <Content Include="Icons\Bookmarks\GotoPrev.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\GotoPrevInFile.png">
+    <Content Include="Icons\Bookmarks\GotoPrevInFile.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\GotoPrevInFolder.png">
+    <Content Include="Icons\Bookmarks\GotoPrevInFolder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\NextBreakpoint.png">
+    <Content Include="Icons\Bookmarks\NextBreakpoint.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\Pin.png">
+    <Content Include="Icons\Bookmarks\Pin.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\PrevBreakpoint.png">
+    <Content Include="Icons\Bookmarks\PrevBreakpoint.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\ToggleMark.png">
+    <Content Include="Icons\Bookmarks\ToggleMark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\UnhealthyBreakpoint.png">
+    <Content Include="Icons\Bookmarks\UnhealthyBreakpoint.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Bookmarks\UnhealthyBreakpointConditional.png">
+    <Content Include="Icons\Bookmarks\UnhealthyBreakpointConditional.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CodeEditor\Icons\Icons.32x32.EmptyFileIcon.png" />
-    <Content Include="CodeEditor\Icons\open-alt-icon.png" />
-    <Content Include="CodeEditor\Icons\Play-Green-Button-icon.png" />
-    <Content Include="CodeEditor\Icons\save-icon.png" />
+    <Content Include="Icons\Icons.32x32.EmptyFileIcon.png" />
+    <Content Include="Icons\open-alt-icon.png" />
+    <Content Include="Icons\Play-Green-Button-icon.png" />
+    <Content Include="Icons\save-icon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GScripting\GScripting.csproj">

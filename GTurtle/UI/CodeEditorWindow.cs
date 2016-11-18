@@ -1,15 +1,15 @@
 ﻿using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-using MResolver.UI.CodeEditor;
 using System.Windows.Forms.Integration;
-using GScripting;
 using System.Collections.Generic;
+using GScripting;
+using GScripting.CodeEditor;
 
 namespace GTurtle
 {
     public partial class CodeEditorWindow : DockContent
     {
-        public ResolverCodeEditor Editor;
+        public EditorControl Editor;
         public ElementHost wpf_host;
 
         private MainForm _mainForm;
@@ -27,7 +27,7 @@ namespace GTurtle
             //THIS IS NEEDED IF HOSTED INSIDE MDI!!
             wpf_host.TabStop = false;
 
-            Editor = new ResolverCodeEditor();
+            Editor = new EditorControl();
             wpf_host.Child = Editor;
                         
         }

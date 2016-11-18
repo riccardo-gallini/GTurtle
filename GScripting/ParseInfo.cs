@@ -16,7 +16,7 @@ namespace GScripting
 
         public bool IsValid { get; }
         
-        public ParseInfo(List<ScriptError> errors, PythonAst python_ast)
+        internal ParseInfo(List<ScriptError> errors, PythonAst python_ast)
         {
             this.Errors = errors;
             this.Ast = python_ast;

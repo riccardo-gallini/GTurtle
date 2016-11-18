@@ -11,7 +11,7 @@ namespace GScripting
     public class DebugInfo
     {
         public int CurrentLine { get; private set; }
-        public ExecutionScope ExecutionScope { get; private set; }
+        public ExecutionContext ExecutionScope { get; private set; }
         public bool IsError { get; private set; }
         public string Message { get; private set; }
         public string ErrorTypeName { get; private set; }
@@ -21,7 +21,7 @@ namespace GScripting
         {
         }
 
-        internal static DebugInfo CreateError(Exception ex, ExecutionScope executionScope)
+        internal static DebugInfo CreateError(Exception ex, ExecutionContext executionScope)
         {
             var info = new DebugInfo();
             
@@ -42,7 +42,7 @@ namespace GScripting
             return info;
         }
 
-        internal static DebugInfo Create(TraceBackFrame frame, ExecutionScope executionScope)
+        internal static DebugInfo Create(TraceBackFrame frame, ExecutionContext executionScope)
         {
             var info = new DebugInfo();
             info.CurrentLine = (int)frame.f_lineno;
@@ -52,7 +52,7 @@ namespace GScripting
             return info;
         }
 
-        internal static DebugInfo CreateEmpty(ExecutionScope executionScope)
+        internal static DebugInfo CreateEmpty(ExecutionContext executionScope)
         {
             return new DebugInfo();
         }

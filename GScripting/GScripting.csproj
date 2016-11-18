@@ -69,7 +69,7 @@
     <Compile Include="DebugInfo.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ExecutionOutput.cs" />
-    <Compile Include="ExecutionScope.cs" />
+    <Compile Include="ExecutionContext.cs" />
     <Compile Include="ExecutionVariable.cs" />
     <Compile Include="ParseInfo.cs" />
     <Compile Include="ParserService.cs" />

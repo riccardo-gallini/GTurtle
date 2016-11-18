@@ -14,7 +14,7 @@ namespace GTurtle
             _mainForm = mainForm;
         }
         
-        public void ShowScope(ExecutionScope execScope)
+        public void ShowScope(ExecutionContext execScope)
         {
             Clear();
             

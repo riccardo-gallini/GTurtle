@@ -3,11 +3,11 @@ using System.Text;
 
 namespace GScripting
 {
-    public class ExecutionOutput : TextWriter
+    internal class ExecutionOutput : TextWriter
     {
-        private ExecutionScope _executionScope;
+        private ExecutionContext _executionScope;
 
-        public ExecutionOutput(ExecutionScope execScope) : base()
+        internal ExecutionOutput(ExecutionContext execScope) : base()
         {
             _executionScope = execScope;
         }

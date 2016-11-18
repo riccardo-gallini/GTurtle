@@ -10,7 +10,7 @@ namespace GScripting
     /// Supresses exceptions thrown by the PythonParser when it finds a parsing error.
     /// Errors are stored in Errors collection.
     /// </summary>
-    public class ScriptErrorSink : ErrorSink
+    internal class ScriptErrorSink : ErrorSink
     {
         public List<ScriptError> Errors { get; }
 

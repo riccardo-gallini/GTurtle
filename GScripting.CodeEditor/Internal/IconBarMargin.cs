@@ -10,17 +10,13 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit.Rendering;
 using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.SharpDevelop.Bookmarks;
-using ICSharpCode.SharpDevelop;
-using System.Windows.Media.Imaging;
-using MResolver.UI;
 
-namespace ICSharpCode.AvalonEdit.AddIn
+namespace GScripting.CodeEditor.Internal
 {
 	/// <summary>
 	/// Icon bar: contains breakpoints and other icons.
 	/// </summary>
-	public class IconBarMargin : AbstractMargin, IDisposable
+	internal class IconBarMargin : AbstractMargin, IDisposable
 	{
 		readonly IconBarManager manager;
 		

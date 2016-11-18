@@ -21,12 +21,12 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ICSharpCode.SharpDevelop.Editor
+namespace GScripting.CodeEditor.Internal
 {
     /// <summary>
     /// Represents a text marker.
     /// </summary>
-    public interface ITextMarker
+    internal interface ITextMarker
     {
         /// <summary>
         /// Gets the start offset of the marked text region.
@@ -101,7 +101,7 @@ namespace ICSharpCode.SharpDevelop.Editor
     }
 
     [Flags]
-    public enum TextMarkerTypes
+    internal enum TextMarkerTypes
     {
         /// <summary>
         /// Use no marker
@@ -138,7 +138,7 @@ namespace ICSharpCode.SharpDevelop.Editor
         CircleInScrollBar = 0x1000
     }
 
-    public interface ITextMarkerService
+    internal interface ITextMarkerService
     {
         /// <summary>
         /// Creates a new text marker. The text marker will be invisible at first,

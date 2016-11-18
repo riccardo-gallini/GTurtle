@@ -1,8 +1,7 @@
 ﻿using Cyotek.Windows.Forms;
 using GScripting;
-using MResolver.UI.CodeEditor;
+using GScripting.CodeEditor;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,13 +24,13 @@ namespace GTurtle
         public WatchWindow watchWindow;
 
         //
-        private ResolverCodeEditor editor;
+        private EditorControl editor;
         private ImageBox surface;
         private ParserService parserService;
 
         //
         private WorkbenchStatus _status;
-        private ExecutionScope executionScope;
+        private ExecutionContext executionScope;
 
         private string script_filename = "";
 

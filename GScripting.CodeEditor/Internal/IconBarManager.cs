@@ -2,22 +2,18 @@
 // This code is distributed under the GNU LGPL (for details please see \doc\license.txt)
 
 using ICSharpCode.AvalonEdit.Document;
-//using ICSharpCode.SharpDevelop.Dom;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using ICSharpCode.SharpDevelop.Bookmarks;
-using ICSharpCode.SharpDevelop.Editor;
-using MResolver.UI;
 
-namespace ICSharpCode.AvalonEdit.AddIn
+namespace GScripting.CodeEditor.Internal
 {
 	/// <summary>
 	/// Stores the entries in the icon bar margin. Multiple icon bar margins
 	/// can use the same manager if split view is used.
 	/// </summary>
-	public class IconBarManager : IBookmarkMargin
+	internal class IconBarManager : IBookmarkMargin
 	{
 		ObservableCollection<IBookmark> bookmarks = new ObservableCollection<IBookmark>();
         IDocument document;

@@ -25,14 +25,13 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
-using ICSharpCode.SharpDevelop.Editor;
 
-namespace ICSharpCode.AvalonEdit.AddIn
+namespace GScripting.CodeEditor.Internal
 {
     /// <summary>
     /// Handles the text markers for a code editor.
     /// </summary>
-    public sealed class TextMarkerService : DocumentColorizingTransformer, IBackgroundRenderer, ITextMarkerService, ITextViewConnect
+    internal sealed class TextMarkerService : DocumentColorizingTransformer, IBackgroundRenderer, ITextMarkerService, ITextViewConnect
     {
         TextSegmentCollection<TextMarker> markers;
         TextDocument document;
@@ -272,7 +271,7 @@ namespace ICSharpCode.AvalonEdit.AddIn
         #endregion
     }
 
-    public sealed class TextMarker : TextSegment, ITextMarker
+    internal sealed class TextMarker : TextSegment, ITextMarker
     {
         readonly TextMarkerService service;
 

@@ -39,7 +39,7 @@ namespace GScripting
             }
         }
 
-        public ScriptError(string path, string message, string lineText, SourceSpan span, int errorCode, Severity severity)
+        internal ScriptError(string path, string message, string lineText, SourceSpan span, int errorCode, Severity severity)
         {
             this.Path = path;
             this.Message = message;

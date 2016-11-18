@@ -1,15 +1,13 @@
-﻿using ICSharpCode.SharpDevelop.Bookmarks;
-using System;
-using System.Collections.Generic;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Document;
+using GScripting.CodeEditor.Internal;
 
-namespace MResolver.UI
+namespace GScripting.CodeEditor
 {
     public class Breakpoint : BookmarkBase, GScripting.IBreakpoint
     {
 
-        public Breakpoint(int _line, IBookmarkMargin _manager) : base(new TextLocation(_line, 1))
+        internal Breakpoint(int _line, IBookmarkMargin _manager) : base(new TextLocation(_line, 1))
         {
             Manager = _manager;
         }
@@ -23,7 +21,7 @@ namespace MResolver.UI
             }
         }
 
-        public IBookmarkMargin Manager { get; }
+        internal IBookmarkMargin Manager { get; }
            
 
        

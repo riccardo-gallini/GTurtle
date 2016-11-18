@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace GScripting
 {
-    public class ExecutionScope
+    public class ExecutionContext
     {
         private ScriptScope _variableScope;
         private Dictionary<string, object> _defaultCommands;
@@ -65,7 +65,7 @@ namespace GScripting
             }
         }
 
-        public ExecutionScope(Engine Engine, ScriptScope VariableScope)
+        internal ExecutionContext(Engine Engine, ScriptScope VariableScope)
         {
             _engine = Engine;
             _variableScope = VariableScope;

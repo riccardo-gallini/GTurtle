@@ -55,10 +55,10 @@ namespace GScripting
             return parser;
         }
 
-        public ExecutionScope CreateExecutionContext()
+        public ExecutionContext CreateExecutionContext()
         {
             var variableScope = scriptEngine.CreateScope();
-            var context = new ExecutionScope(this, variableScope);
+            var context = new ExecutionContext(this, variableScope);
             return context;
         }
         

@@ -1,15 +1,13 @@
 ﻿// Copyright (c) AlphaSierraPapa for the SharpDevelop Team (for details please see \doc\copyright.txt)
-// This code is distributed under the GNU LGPL (for details please see \doc\license.txt)
+// This code is distributed under the GNU LGPL 
 
-using ICSharpCode.SharpDevelop.Editor;
 using System;
 using System.Windows.Input;
-//using ICSharpCode.NRefactory;
+using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using System.Windows.Media;
-using MResolver.UI;
 
-namespace ICSharpCode.SharpDevelop.Bookmarks
+namespace GScripting.CodeEditor.Internal
 {
 	/// <summary>
 	/// A bookmark that can be attached to an AvalonEdit TextDocument.
@@ -19,7 +17,7 @@ namespace ICSharpCode.SharpDevelop.Bookmarks
 		TextLocation location;
 		
 		IDocument document;
-        AvalonEdit.Document.ITextAnchor anchor;
+        ITextAnchor anchor;
 		
 		public IDocument Document {
 			get {
@@ -49,7 +47,7 @@ namespace ICSharpCode.SharpDevelop.Bookmarks
 				);
 				anchor = document.CreateAnchor(offset);
 				// after insertion: keep bookmarks after the initial whitespace (see DefaultFormattingStrategy.SmartReplaceLine)
-				anchor.MovementType = AvalonEdit.Document.AnchorMovementType.AfterInsertion;
+				anchor.MovementType = AnchorMovementType.AfterInsertion;
 				anchor.Deleted += AnchorDeleted;
 			} else {
 				anchor = null;
@@ -77,7 +75,7 @@ namespace ICSharpCode.SharpDevelop.Bookmarks
 		/// Gets the TextAnchor used for this bookmark.
 		/// Is null if the bookmark is not connected to a document.
 		/// </summary>
-		public AvalonEdit.Document.ITextAnchor Anchor {
+		public ITextAnchor Anchor {
 			get { return anchor; }
 		}
 		
