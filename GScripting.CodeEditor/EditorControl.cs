@@ -32,7 +32,7 @@ namespace GScripting.CodeEditor
 
             //Syntax highlighting -- Python.xshd
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "GTurtle.CodeEditor.Python.xshd";
+            var resourceName = "GScripting.CodeEditor.Python.xshd";
             
             Stream xshd_stream = assembly.GetManifestResourceStream(resourceName);
             if (xshd_stream!=null)

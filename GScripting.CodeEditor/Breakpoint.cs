@@ -17,7 +17,7 @@ namespace GScripting.CodeEditor
         {
             get
             {
-                return ResourceImage.Get("CodeEditor/Icons/Bookmarks/Breakpoint.png");
+                return ResourceImage.Get("Icons/Bookmarks/Breakpoint.png");
             }
         }
 

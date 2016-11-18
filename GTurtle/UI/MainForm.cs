@@ -324,11 +324,7 @@ namespace GTurtle
             }
 
             surfaceWindow.ImageBox.Invalidate();
-
-            if (_status != WorkbenchStatus.ExecutionError)
-            {
-                setWorkbenchStatusUI(WorkbenchStatus.Editing);
-            }
+          
         }
 
 
@@ -367,7 +363,7 @@ namespace GTurtle
 
         private void scriptEndUpdateUI(DebugInfo info)
         {
-
+            this.InvokeAction( () => setWorkbenchStatusUI(WorkbenchStatus.Editing) );
         }
 
         #endregion
