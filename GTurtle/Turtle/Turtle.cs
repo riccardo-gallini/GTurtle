@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -10,6 +11,10 @@ namespace GTurtle
     {
         private Brush currentBrush;
         private double currentThickness;
+
+        private Path currentPath;
+        private PathFigure currentPathFigure;
+        private PathGeometry currentPathGeometry;
 
         private double _origin_X;
         private double _origin_Y;
@@ -78,9 +83,41 @@ namespace GTurtle
         {
             if (_is_pen_down)
             {
-                line(_pos_X, _pos_Y, to_x, to_y);
+                path_line(to_x, to_y);
             }
             jump(to_x, to_y);
+        }
+
+        private void path_line(double to_x, double to_y)
+        {
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    if (currentPath == null)
+                    {
+                        currentPathFigure = new PathFigure();
+                        currentPathFigure.StartPoint = new Point(_transform_X(_pos_X), _transform_Y(_pos_Y));
+                        currentPathFigure.IsFilled = false;
+
+                        var currentPathGeometry = new PathGeometry();
+                        currentPathGeometry.Figures.Add(currentPathFigure);
+
+                        currentPath = new Path();
+                        currentPath.Stroke = currentBrush;
+                        currentPath.StrokeThickness = currentThickness;
+                        currentPath.Data = currentPathGeometry;
+
+                        canvas.Children.Add(currentPath);
+                    }
+
+                    var segment = new LineSegment();
+                    segment.Point = new Point(_transform_X(to_x), _transform_Y(to_y));
+                    segment.IsStroked = true;
+
+                    currentPathFigure.Segments.Add(segment);
+                }
+            );
+            
         }
 
         public void aim(double angle)
@@ -98,6 +135,7 @@ namespace GTurtle
         public void pen_up()
         {
             _is_pen_down = false;
+            currentPath = null;
         }
 
         public void pen_down()
@@ -107,13 +145,20 @@ namespace GTurtle
 
         public void color(string col_name)
         {
-            var c = (Color)ColorConverter.ConvertFromString(col_name);
-            currentBrush = new SolidColorBrush(c);
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    var c = (Color)ColorConverter.ConvertFromString(col_name);
+                    currentBrush = new SolidColorBrush(c);
+                }
+            );
+            currentPath = null;
         }
 
         public void width(int w)
         {
             currentThickness = w;
+            currentPath = null;
         }
 
         public double x()
