@@ -6,7 +6,7 @@ namespace GTurtle
     public static class InvokeExtensions
     {
 
-        //Utility function to invoke on an action, instead of a delegate.
+        //Utility function to invoke on an action [on a Windows Forms Control], instead of a delegate.
         public static void InvokeAction(this Control ctrl, Action action)
         {
             if (ctrl.InvokeRequired)

@@ -2,18 +2,20 @@
 
 namespace GTurtle
 {
-    class SurfaceSize
+    public class SurfaceSize
     {
-        public System.Drawing.Size ActualSize;
+        public double Height { get; }
+        public double Width { get; }
 
         public SurfaceSize(int width, int height)
         {
-            ActualSize = new System.Drawing.Size(width, height);
+            Height = height;
+            Width = width;
         }
 
         public override string ToString()
         {
-            return ActualSize.Width.ToString() + " x " + ActualSize.Height.ToString();
+            return Width.ToString() + " x " + Height.ToString();
         }
 
         public static List<SurfaceSize> List()

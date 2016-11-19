@@ -63,6 +63,10 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Surface\ZoomBorder.cs" />
+    <Compile Include="Surface\TurtleCanvas.xaml.cs">
+      <DependentUpon>TurtleCanvas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Util\KeyPreviewElementHost.cs" />
     <Compile Include="UI\WatchWindow.cs">
       <SubType>Form</SubType>
@@ -148,6 +152,12 @@
       <Project>{ec912fa9-3b5f-47ea-bde6-3253bd6f4d6f}</Project>
       <Name>GScripting</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Surface\TurtleCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,38 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace GTurtle
 {
     public class Turtle
     {
-        private Graphics graphics;
-        private Pen currentPen;
+        private Brush currentBrush;
+        private double currentThickness;
 
-        private float _origin_X;
-        private float _origin_Y;
+        private double _origin_X;
+        private double _origin_Y;
 
         private double _pos_X = 0;
         private double _pos_Y = 0;
         private double _orientation = 0;
         private bool _is_pen_down = true;
 
-        private Control inv_control;
+        private Canvas canvas;
+               
         
-        public Turtle(Graphics gr, Size sz, Control c)
+        public Turtle(Canvas _canvas, SurfaceSize sz)
         {
-            graphics = gr;
-
+            canvas = _canvas;
             _origin_X = sz.Width / 2;
             _origin_Y = sz.Height / 2;
-            currentPen = new Pen(Color.Black);
-            currentPen.Width = 1;
-
-            inv_control = c;
+            currentBrush = new SolidColorBrush(Colors.Black);
+            currentThickness = 4.0;
         }
 
 
@@ -111,13 +107,13 @@ namespace GTurtle
 
         public void color(string col_name)
         {
-            var c = Color.FromName(col_name);
-            currentPen.Color = c;
+            var c = (Color)ColorConverter.ConvertFromString(col_name);
+            currentBrush = new SolidColorBrush(c);
         }
 
         public void width(int w)
         {
-            currentPen.Width = w;
+            currentThickness = w;
         }
 
         public double x()
@@ -143,49 +139,78 @@ namespace GTurtle
         public void sleep(int t)
         {
             System.Threading.Thread.Sleep(t);
-            inv_control.Invalidate();
+            //TODO: visual update?
         }
 
         public void rectangle(double x, double y, double width, double height)
         {
-            float _x = _transform_X(x);
-            float _y = _transform_Y(y);
-            graphics.DrawRectangle(currentPen, _x, _y, (float)width, (float)height);
+            double _x = _transform_X(x);
+            double _y = _transform_Y(y);
+
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    var rect = new Rectangle();
+                    rect.Height = height;
+                    rect.Width = width;
+                    rect.Stroke = currentBrush;
+                    rect.StrokeThickness = currentThickness;
+                    Canvas.SetTop(rect, _y);
+                    Canvas.SetLeft(rect, _x);
+                    canvas.Children.Add(rect);
+                }
+            );
+
+            
         }
 
         public void line(double x1, double y1, double x2, double y2)
         {
-            float _x1 = _transform_X(x1);
-            float _y1 = _transform_Y(y1);
-            float _x2 = _transform_X(x2);
-            float _y2 = _transform_Y(y2);
-            graphics.DrawLine(currentPen, _x1, _y1, _x2, _y2);
+            canvas.Dispatcher.Invoke(
+                () => { 
+                        var line = new Line();
+                        line.X1 = _transform_X(x1);
+                        line.Y1 = _transform_Y(y1);
+                        line.X2 = _transform_X(x2);
+                        line.Y2 = _transform_Y(y2);
+                        line.Stroke = currentBrush;
+                        line.StrokeThickness = currentThickness;
+                        canvas.Children.Add(line);
+                }
+            );
         }
 
         public void bezier(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
         {
-            float _x1 = _transform_X(x1);
-            float _y1 = _transform_Y(y1);
-            float _x2 = _transform_X(x2);
-            float _y2 = _transform_Y(y2);
-            float _x3 = _transform_X(x2);
-            float _y3 = _transform_Y(y2);
-            float _x4 = _transform_X(x2);
-            float _y4 = _transform_Y(y2);
         }
 
         public void circle(double x, double y, double radius)
         {
-            float _x = _transform_X(x - radius);
-            float _y = _transform_Y(y + radius);
-            float _diameter = 2 * (float)radius;
-            graphics.DrawEllipse(currentPen, _x, _y, _diameter, _diameter);
+            double _x = _transform_X(x - radius);
+            double _y = _transform_Y(y + radius);
+            double _diameter = 2 * (float)radius;
+
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+
+                    var ellipse = new Ellipse();
+                    ellipse.Stroke = currentBrush;
+                    ellipse.StrokeThickness = currentThickness;
+
+                    ellipse.Height = _diameter;
+                    ellipse.Width = _diameter;
+                    Canvas.SetTop(ellipse, _y);
+                    Canvas.SetLeft(ellipse, _x);
+                    canvas.Children.Add(ellipse);
+                }
+            );
+            
         }
 
         public void clear()
         {
-            //TODO: parametrize background color
-            graphics.Clear(Color.White);
+            canvas.Dispatcher.Invoke(() => canvas.Children.Clear());
         }
 
         public void reset()
@@ -197,14 +222,14 @@ namespace GTurtle
         #endregion
 
 
-        private float _transform_X(double x)
+        private double _transform_X(double x)
         {
-            return _origin_X + (float)x;
+            return _origin_X + x;
         }
 
-        private float _transform_Y(double y)
+        private double _transform_Y(double y)
         {
-            return _origin_Y - (float)y;
+            return _origin_Y - y;
         }
 
     }

@@ -1,8 +1,9 @@
-﻿using Cyotek.Windows.Forms;
-using GScripting;
+﻿using GScripting;
+using GTurtle.Surface;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -21,9 +22,7 @@ namespace GTurtle
         public OutputWindow outputWindow;
         public CodeErrorsWindow codeErrorsWindow;
         public WatchWindow watchWindow;
-
-        //
-        private ImageBox surface;
+        
         private ParserService parserService;
 
         //
@@ -50,10 +49,7 @@ namespace GTurtle
             codeEditorWindow.Show(dockPanel, DockState.Document);
             codeErrorsWindow.Show(dockPanel, DockState.DockBottom);
             watchWindow.Show(dockPanel, DockState.DockBottom);
-
-            //editor stuff
-            surface = surfaceWindow.ImageBox;
-
+            
             //surface sizes
             cmbSurfaceSize.Items.AddRange(SurfaceSize.List().ToArray());
             cmbSurfaceSize.SelectedIndex = 0;
@@ -338,30 +334,27 @@ namespace GTurtle
         {
             setWorkbenchStatusUI(WorkbenchStatus.Running);
 
-            using (var g = Graphics.FromImage(surface.Image))
-            {
-                g.Clear(surfaceWindow.ImageBox.BackColor);
+            surfaceWindow.Clear();  
 
-                //prepare the turtle
-                var turtle = new Turtle(g, surface.Image.Size, surfaceWindow.ImageBox);
+            //prepare the turtle
+            var turtle = new Turtle(surfaceWindow.DrawingCanvas, surfaceWindow.GetDrawingCanvasSize());
 
-                executionContext = Engine.CreateExecutionContext();
-                executionContext.RegisterGetSource(getSourceUI);
-                executionContext.RegisterCommands(turtle.GetCommands());
-                executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
-                executionContext.RegisterDebuggerStep(debuggerUpdateUI);
-                executionContext.RegisterOnOutput(outputUpdateUI);
-                executionContext.RegisterOnError(errorUpdateUI);
-                executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
+            executionContext = Engine.CreateExecutionContext();
+            executionContext.RegisterGetSource(getSourceUI);
+            executionContext.RegisterCommands(turtle.GetCommands());
+            executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
+            executionContext.RegisterDebuggerStep(debuggerUpdateUI);
+            executionContext.RegisterOnOutput(outputUpdateUI);
+            executionContext.RegisterOnError(errorUpdateUI);
+            executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
                                 
-                if (requestPause) { executionContext.RequestPause(); }
+            if (requestPause) { executionContext.RequestPause(); }
 
-                //exec the script
-                await executionContext.RunAsync();
-            }
+            //exec the script
+            await executionContext.RunAsync();
 
-            surfaceWindow.ImageBox.Invalidate();
-          
+            surfaceWindow.UpdateVisual(); 
+                      
         }
 
 
@@ -380,7 +373,7 @@ namespace GTurtle
                 () =>
                     {
                         codeEditorWindow.MarkDebugLine(info.CurrentLine, isError:false);
-                        surfaceWindow.ImageBox.Invalidate();
+                        surfaceWindow.UpdateVisual();
                         watchWindow.ShowScope(info.ExecutionScope);
                         setWorkbenchStatusUI(WorkbenchStatus.Paused);
                     });
@@ -397,7 +390,7 @@ namespace GTurtle
                 () =>
                 {
                     codeEditorWindow.MarkDebugLine(info.CurrentLine, info.IsError, message:info.Message);
-                    surfaceWindow.ImageBox.Invalidate();
+                    surfaceWindow.UpdateVisual();
                     watchWindow.ShowScope(info.ExecutionScope);
                     setWorkbenchStatusUI(WorkbenchStatus.ExecutionError);
                 });
@@ -507,24 +500,12 @@ namespace GTurtle
             if (cmbSurfaceSize.SelectedItem != null)
             {
                 var sz = (SurfaceSize)cmbSurfaceSize.SelectedItem;
-                var img = new Bitmap(sz.ActualSize.Width, sz.ActualSize.Height);
-                
-                surfaceWindow.ImageBox.Image = img;
-
-                using (var g = Graphics.FromImage(surface.Image))
-                {
-                    g.Clear(surfaceWindow.ImageBox.BackColor);
-                }
-
-                surfaceWindow.ImageBox.Invalidate(); // Trigger redraw of the control.
-
+                surfaceWindow.SetDrawingCanvasSize(sz);
             }
-
     }
 
-
         #endregion
-        
+       
     }
 
     public enum WorkbenchStatus
