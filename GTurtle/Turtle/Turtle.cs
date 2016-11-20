@@ -52,7 +52,7 @@ namespace GTurtle
             cmd.Add("clear", new Action(this.clear));
             cmd.Add("color", new Action<string>(this.color));
             cmd.Add("go_to", new Action<double,double>(this.go_to));
-            cmd.Add("image", new Action<string,double,double>(this.image));
+            cmd.Add("image", new Action<string>(this.image));
             cmd.Add("pen_down", new Action(this.pen_down));
             cmd.Add("pen_up", new Action(this.pen_up));
             cmd.Add("width", new Action<int>(this.width));
@@ -197,16 +197,16 @@ namespace GTurtle
             return _pos_Y;
         }
 
-        public void image(string url, double height = 40, double width = 40)
+        public void image(string url)
         {
             canvas.Dispatcher.Invoke(
                 () =>
                 {
-                    var source = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute));
+                    var source = new BitmapImage(new Uri(url));
                     
                     turtleImage.Source = source;
-                    turtleImage.Height = height;
-                    turtleImage.Width = width;
+                    turtleImage.Height = 40;
+                    turtleImage.Width = 40;
                     
                 }
             );

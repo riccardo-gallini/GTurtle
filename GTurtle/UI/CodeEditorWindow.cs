@@ -1,9 +1,9 @@
-﻿using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
-using System.Windows.Forms.Integration;
+﻿using WeifenLuo.WinFormsUI.Docking;
 using System.Collections.Generic;
 using GScripting;
 using GScripting.CodeEditor;
+using System.Windows;
+using System.Windows.Forms;
 using System;
 
 namespace GTurtle
@@ -15,6 +15,8 @@ namespace GTurtle
 
         private MainForm _mainForm;
         private string script_file_name = "";
+
+        private ImageFileDropHandler drop_handler;
 
         public CodeEditorWindow(MainForm mainForm)
         {
@@ -31,13 +33,34 @@ namespace GTurtle
 
             editor = new EditorControl();
             wpf_host.Child = editor;
-                        
-            editor.TextChanged += Editor_TextChanged;
 
+            //manage dropping image files on code text in order to import an image command
+            drop_handler = new ImageFileDropHandler(editor.TextArea);
+            drop_handler.GetTextFromDataObject = getTextFromDataObject;            
+            
+            editor.TextChanged += Editor_TextChanged;
+            
             updateWindowCaption();
                         
         }
 
+        private string getTextFromDataObject(DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            {
+                string[] data = (string[])e.DataObject.GetData(System.Windows.DataFormats.FileDrop);
+
+                if (data.Length > 0)
+                {
+                    var uri = new System.Uri(data[0]);
+                    return "image(\"" + uri.AbsoluteUri + "\")";
+                }
+            }
+            return null;
+        }
+
+       
+       
         private void Editor_TextChanged(object sender, System.EventArgs e)
         {
             updateWindowCaption();
