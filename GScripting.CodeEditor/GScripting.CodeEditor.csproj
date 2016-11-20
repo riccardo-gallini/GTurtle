@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Breakpoint.cs" />
+    <Compile Include="Internal\DragDropHandler.cs" />
     <Compile Include="Internal\BookmarkBase.cs" />
     <Compile Include="Internal\IBookmarkMargin.cs" />
     <Compile Include="Internal\IconBarManager.cs" />

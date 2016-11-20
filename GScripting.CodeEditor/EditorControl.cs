@@ -57,6 +57,9 @@ namespace GScripting.CodeEditor
             //IconbarMargin
             initializeBookmarkManager();
 
+            //Drag and drop
+            initializeDragDropHandler();
+
             //Indentation strategy
             //textEditor.TextArea.IndentationStrategy
 
@@ -247,9 +250,38 @@ namespace GScripting.CodeEditor
         }
 
         #endregion
-        
+
         #endregion
-        
+
+        #region " Drag and drop "
+
+        DragDropHandler dragDropHandler;
+
+        void initializeDragDropHandler()
+        {
+            dragDropHandler = new DragDropHandler(this.TextArea);
+        }
+
+        public void RegisterDropDataFormat(string format)
+        {
+            dragDropHandler.DataFormats.Add(format);
+        }
+
+        public Func<DataObjectPastingEventArgs, string> GetDropData
+        {
+            get
+            {
+                return dragDropHandler.GetDropData;
+            }
+            set
+            {
+                dragDropHandler.GetDropData = value;
+            }
+        }
+
+        #endregion
+
+
         #region Completion Window
 
         CompletionWindow completionWindow;

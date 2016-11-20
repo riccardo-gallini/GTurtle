@@ -67,7 +67,6 @@
     <Compile Include="Surface\TurtleCanvas.xaml.cs">
       <DependentUpon>TurtleCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Util\ImageFileDropHandler.cs" />
     <Compile Include="UI\Util\KeyPreviewElementHost.cs" />
     <Compile Include="UI\WatchWindow.cs">
       <SubType>Form</SubType>

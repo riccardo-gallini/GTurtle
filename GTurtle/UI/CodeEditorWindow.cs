@@ -15,9 +15,7 @@ namespace GTurtle
 
         private MainForm _mainForm;
         private string script_file_name = "";
-
-        private ImageFileDropHandler drop_handler;
-
+        
         public CodeEditorWindow(MainForm mainForm)
         {
             InitializeComponent();
@@ -35,8 +33,8 @@ namespace GTurtle
             wpf_host.Child = editor;
 
             //manage dropping image files on code text in order to import an image command
-            drop_handler = new ImageFileDropHandler(editor.TextArea);
-            drop_handler.GetTextFromDataObject = getTextFromDataObject;            
+            editor.RegisterDropDataFormat(System.Windows.DataFormats.FileDrop);
+            editor.GetDropData = getTextFromDataObject;            
             
             editor.TextChanged += Editor_TextChanged;
             

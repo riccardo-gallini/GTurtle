@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace GTurtle
+namespace GScripting.CodeEditor.Internal
 {
-    public class ImageFileDropHandler
+    internal class DragDropHandler
     {
         private TextArea textArea;
-        public Func<DataObjectPastingEventArgs, string> GetTextFromDataObject { get; set; }
-       
-        public ImageFileDropHandler(TextArea _textArea)
+        public Func<DataObjectPastingEventArgs, string> GetDropData { get; set; }
+
+        internal IList<string> DataFormats;
+
+        public DragDropHandler(TextArea _textArea)
         {
             textArea = _textArea;
 
@@ -26,6 +28,8 @@ namespace GTurtle
             textArea.Drop += this.textArea_Drop;
             textArea.GiveFeedback += this.textArea_GiveFeedback;
             textArea.QueryContinueDrag += this.textArea_QueryContinueDrag;
+
+            DataFormats = new List<string>();
         }
 
         void textArea_DragEnter(object sender, DragEventArgs e)
@@ -77,19 +81,27 @@ namespace GTurtle
                 {
                     int start = textArea.Caret.Offset;
                     
-                    var pastingEventArgs = new DataObjectPastingEventArgs(e.Data, true, DataFormats.FileDrop);
-                    textArea.RaiseEvent(pastingEventArgs);
-                    if (pastingEventArgs.CommandCancelled)
-                        return;
+                    foreach(var format in DataFormats)
+                    {
+                        if (e.Data.GetDataPresent(format, true))
+                        {
+                            var pastingEventArgs = new DataObjectPastingEventArgs(e.Data, true, format);
+                            textArea.RaiseEvent(pastingEventArgs);
+                            if (pastingEventArgs.CommandCancelled)
+                                return;
 
-                    string text = GetTextFromDataObject?.Invoke(pastingEventArgs);
-                    if (text == null)
-                        return;
-                                                
-                    textArea.Document.Insert(start, text);
-                    textArea.Selection = Selection.Create(textArea, start, start + text.Length);
+                            string text = GetDropData?.Invoke(pastingEventArgs);
+                            if (text == null)
+                                return;
+
+                            textArea.Document.Insert(start, text);
+                            textArea.Selection = Selection.Create(textArea, start, start + text.Length);
+
+                            e.Handled = true;
+                        }
+
+                    }
                     
-                    e.Handled = true;
                 }
             }
             catch (Exception ex)
@@ -149,7 +161,18 @@ namespace GTurtle
 
         DragDropEffects GetEffect(DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            bool data_present = false;
+
+            foreach(var format in DataFormats)
+            {
+                if (e.Data.GetDataPresent(format,true))
+                {
+                    data_present = true;
+                    break;
+                }
+            }
+            
+            if (data_present)
             {
                 e.Handled = true;
                 int visualColumn;
