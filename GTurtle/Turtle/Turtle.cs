@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace GTurtle
@@ -16,6 +17,8 @@ namespace GTurtle
         private PathFigure currentPathFigure;
         private PathGeometry currentPathGeometry;
 
+        private Image turtleImage;
+
         private double _origin_X;
         private double _origin_Y;
 
@@ -23,7 +26,7 @@ namespace GTurtle
         private double _pos_Y = 0;
         private double _orientation = 0;
         private bool _is_pen_down = true;
-
+        
         private Canvas canvas;
                
         
@@ -34,6 +37,9 @@ namespace GTurtle
             _origin_Y = sz.Height / 2;
             currentBrush = new SolidColorBrush(Colors.Black);
             currentThickness = 4.0;
+
+            turtleImage = new Image();
+            canvas.Children.Add(turtleImage);
         }
 
 
@@ -46,7 +52,7 @@ namespace GTurtle
             cmd.Add("clear", new Action(this.clear));
             cmd.Add("color", new Action<string>(this.color));
             cmd.Add("go_to", new Action<double,double>(this.go_to));
-            cmd.Add("image", new Action<string>(this.image));
+            cmd.Add("image", new Action<string,double,double>(this.image));
             cmd.Add("pen_down", new Action(this.pen_down));
             cmd.Add("pen_up", new Action(this.pen_up));
             cmd.Add("width", new Action<int>(this.width));
@@ -59,6 +65,8 @@ namespace GTurtle
             cmd.Add("y", new Func<double>(this.y));
             cmd.Add("sleep", new Action<int>(this.sleep));
             cmd.Add("nop", new Action(this.nop));
+            cmd.Add("show", new Action(this.show));
+            cmd.Add("hide", new Action(this.hide));
 
             return cmd;
         }
@@ -77,6 +85,14 @@ namespace GTurtle
         {
             _pos_X = x;
             _pos_Y = y;
+
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    Canvas.SetTop(turtleImage, _transform_Y(_pos_Y) - turtleImage.Height/2);
+                    Canvas.SetLeft(turtleImage, _transform_X(_pos_X) - turtleImage.Width/2);
+                }
+            );
         }
 
         public void go_to(double to_x, double to_y)
@@ -99,7 +115,7 @@ namespace GTurtle
                         currentPathFigure.StartPoint = new Point(_transform_X(_pos_X), _transform_Y(_pos_Y));
                         currentPathFigure.IsFilled = false;
 
-                        var currentPathGeometry = new PathGeometry();
+                        currentPathGeometry = new PathGeometry();
                         currentPathGeometry.Figures.Add(currentPathFigure);
 
                         currentPath = new Path();
@@ -124,12 +140,22 @@ namespace GTurtle
         {
             _orientation = angle;
             _orientation = Math.IEEERemainder(_orientation, 360);
+
+            canvas.Dispatcher.Invoke(
+                ()=>
+                    {
+                        turtleImage.RenderTransform = 
+                                new RotateTransform(angle, 
+                                                    turtleImage.Width / 2, 
+                                                    turtleImage.Height / 2);
+                    }
+            );
+
         }
 
         public void turn(double angle)
         {
-            _orientation += angle;
-            _orientation = Math.IEEERemainder(_orientation, 360);
+            aim(_orientation + angle);
         }
 
         public void pen_up()
@@ -171,9 +197,35 @@ namespace GTurtle
             return _pos_Y;
         }
 
-        public void image(string url)
+        public void image(string url, double height = 40, double width = 40)
         {
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    var source = new BitmapImage(new Uri(url, UriKind.RelativeOrAbsolute));
+                    
+                    turtleImage.Source = source;
+                    turtleImage.Height = height;
+                    turtleImage.Width = width;
+                    
+                }
+            );
 
+            //reposition image (if size is changed)
+            jump(_pos_X, _pos_Y);
+            
+        }
+
+        private void hide()
+        {
+            canvas.Dispatcher.Invoke(
+                () => turtleImage.Visibility = Visibility.Hidden);
+        }
+
+        private void show()
+        {
+            canvas.Dispatcher.Invoke(
+                () => turtleImage.Visibility = Visibility.Visible);
         }
 
         public void nop()
@@ -265,7 +317,6 @@ namespace GTurtle
         }
 
         #endregion
-
 
         private double _transform_X(double x)
         {
