@@ -16,6 +16,8 @@ namespace GTurtle
         private Path currentPath;
         private PathFigure currentPathFigure;
         private PathGeometry currentPathGeometry;
+        private double _currentPathStartX;
+        private double _currentPathStartY;
 
         private Image turtleImage;
 
@@ -52,6 +54,8 @@ namespace GTurtle
             cmd.Add("clear", new Action(this.clear));
             cmd.Add("color", new Action<string>(this.color));
             cmd.Add("go_to", new Action<double,double>(this.go_to));
+            cmd.Add("closed", new Action(this.closed));
+            cmd.Add("filled", new Action<string>(this.filled));
             cmd.Add("image", new Action<string>(this.image));
             cmd.Add("pen_down", new Action(this.pen_down));
             cmd.Add("pen_up", new Action(this.pen_up));
@@ -104,6 +108,26 @@ namespace GTurtle
             jump(to_x, to_y);
         }
 
+        private void create_path()
+        {
+            _currentPathStartX = _pos_X;
+            _currentPathStartY = _pos_Y;
+
+            currentPathFigure = new PathFigure();
+            currentPathFigure.StartPoint = new Point(_transform_X(_pos_X), _transform_Y(_pos_Y));
+            currentPathFigure.IsFilled = false;
+
+            currentPathGeometry = new PathGeometry();
+            currentPathGeometry.Figures.Add(currentPathFigure);
+
+            currentPath = new Path();
+            currentPath.Stroke = currentBrush;
+            currentPath.StrokeThickness = currentThickness;
+            currentPath.Data = currentPathGeometry;
+
+            canvas.Children.Add(currentPath);
+        }
+
         private void path_line(double to_x, double to_y)
         {
             canvas.Dispatcher.Invoke(
@@ -111,19 +135,7 @@ namespace GTurtle
                 {
                     if (currentPath == null)
                     {
-                        currentPathFigure = new PathFigure();
-                        currentPathFigure.StartPoint = new Point(_transform_X(_pos_X), _transform_Y(_pos_Y));
-                        currentPathFigure.IsFilled = false;
-
-                        currentPathGeometry = new PathGeometry();
-                        currentPathGeometry.Figures.Add(currentPathFigure);
-
-                        currentPath = new Path();
-                        currentPath.Stroke = currentBrush;
-                        currentPath.StrokeThickness = currentThickness;
-                        currentPath.Data = currentPathGeometry;
-
-                        canvas.Children.Add(currentPath);
+                        create_path();
                     }
 
                     var segment = new LineSegment();
@@ -135,6 +147,37 @@ namespace GTurtle
             );
             
         }
+
+        private void closed()
+        {
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    if (currentPath == null)
+                    {
+                        create_path();
+                    }
+                    currentPathFigure.IsClosed = true;
+                }
+            );
+        }
+
+        private void filled(string col_name)
+        {
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    if (currentPath == null)
+                    {
+                        create_path();
+                    }
+                    currentPathFigure.IsFilled = true;
+                    var c = (Color)ColorConverter.ConvertFromString(col_name);
+                    currentPath.Fill = new SolidColorBrush(c);
+                }
+            );
+        }
+
 
         public void aim(double angle)
         {
