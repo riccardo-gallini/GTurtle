@@ -62,7 +62,7 @@ namespace GTurtle
 
         public void UpdateVisual()
         {
-            canvasControl.drawingCanvas.InvalidateVisual(); //????????????????
+            
         }
                 
     }

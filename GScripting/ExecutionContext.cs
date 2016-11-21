@@ -32,6 +32,7 @@ namespace GScripting
         internal Action<DebugInfo> _onError;
         internal Action<string> _onOutput;
         internal Action<DebugInfo> _onScriptEnd;
+        internal Action<DebugInfo> _onStop;
         internal Func<int, IBreakpoint> _onCheckBreakpoint;
         internal Func<string> _getSource;
         //////////////
@@ -68,6 +69,11 @@ namespace GScripting
         public void RegisterOnScriptEnd(Action<DebugInfo> action)
         {
             _onScriptEnd = action;
+        }
+
+        public void RegisterOnStop(Action<DebugInfo> action)
+        {
+            _onStop = action;
         }
 
         public void RegisterOnCheckBreakpoint(Func<int, IBreakpoint> func)
@@ -193,7 +199,8 @@ namespace GScripting
 
         public void Stop()
         {
-
+            request_stop = true;
+            resume_execution();
         }
 
         public async Task RunAsync()
@@ -221,7 +228,15 @@ namespace GScripting
                 }
                 catch (Exception ex)
                 {
-                    _onError?.Invoke(DebugInfo.CreateError(ex, this));
+                    if (request_stop)
+                    {
+                        Thread.ResetAbort();
+                        _onStop?.Invoke(DebugInfo.CreateEmpty(this));
+                    }
+                    else
+                    {
+                        _onError?.Invoke(DebugInfo.CreateError(ex, this));
+                    }
                 }
                 finally
                 {
@@ -233,15 +248,19 @@ namespace GScripting
             
         }
 
+        private void checkDebuggerStop()
+        {
+            if (request_stop)
+            {
+                Thread.CurrentThread.Abort();
+            }
+        }
+
         private void checkDebuggerPause(DebugInfo info)
         {
             if (_debuggerStep==null) { return; }
             
-            if (request_stop)
-            {
-
-            }
-            else if (request_pause || _onCheckBreakpoint?.Invoke(info.CurrentLine)!=null)
+            if (request_pause || _onCheckBreakpoint?.Invoke(info.CurrentLine)!=null)
             {
                 _executionStatus = ExecutionStatus.Paused;
                 _debuggerStep(info);
@@ -255,6 +274,7 @@ namespace GScripting
         private TracebackDelegate traceHook(TraceBackFrame frame, string result, object payload)
         {
             this._executionStatus = ExecutionStatus.InternalTrace;
+            checkDebuggerStop();
 
             var info = DebugInfo.Create(frame, this);
             checkDebuggerPause(info);

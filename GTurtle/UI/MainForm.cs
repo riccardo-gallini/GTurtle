@@ -260,7 +260,7 @@ namespace GTurtle
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (_status == WorkbenchStatus.Running)
+            if (_status == WorkbenchStatus.Running || _status == WorkbenchStatus.Paused)
             {
                 executionContext.Stop();
             }
@@ -347,6 +347,7 @@ namespace GTurtle
             executionContext.RegisterOnOutput(outputUpdateUI);
             executionContext.RegisterOnError(errorUpdateUI);
             executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
+            executionContext.RegisterOnStop(scriptEndUpdateUI);
                                 
             if (requestPause) { executionContext.RequestPause(); }
 

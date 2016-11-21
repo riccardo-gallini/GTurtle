@@ -54,7 +54,9 @@ namespace GScripting
 
         internal static DebugInfo CreateEmpty(ExecutionContext executionScope)
         {
-            return new DebugInfo();
+            var info = new DebugInfo();
+            info.ExecutionScope = executionScope;
+            return info;
         }
     }
 }
