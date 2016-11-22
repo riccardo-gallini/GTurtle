@@ -5,6 +5,9 @@ using GScripting.CodeEditor;
 using System.Windows;
 using System.Windows.Forms;
 using System;
+using ICSharpCode.AvalonEdit.Document;
+using System.Reflection;
+using System.IO;
 
 namespace GTurtle
 {
@@ -32,12 +35,14 @@ namespace GTurtle
             editor = new EditorControl();
             wpf_host.Child = editor;
 
+            this.NewFile();
+
             //manage dropping image files on code text in order to import an image command
             editor.RegisterDropDataFormat(System.Windows.DataFormats.FileDrop);
             editor.GetDropData = getTextFromDataObject;            
             
             editor.TextChanged += Editor_TextChanged;
-            
+
             updateWindowCaption();
                         
         }
@@ -51,7 +56,7 @@ namespace GTurtle
                 if (data.Length > 0)
                 {
                     var uri = new System.Uri(data[0]);
-                    return "image(\"" + uri.AbsoluteUri + "\")";
+                    return "\"" + uri.AbsoluteUri + "\"";
                 }
             }
             return null;
@@ -137,9 +142,33 @@ namespace GTurtle
             }
         }
 
+        private string newScript()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "GTurtle.UI.newscript.py";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                        return reader.ReadToEnd();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+        }
+
         public void NewFile()
         {
             editor.Clear();
+            editor.Text = newScript();
+
             editor.IsModified = false;
             setFileName("");
         }

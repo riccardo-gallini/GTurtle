@@ -281,7 +281,6 @@ namespace GScripting.CodeEditor
 
         #endregion
 
-
         #region Completion Window
 
         CompletionWindow completionWindow;

@@ -336,12 +336,11 @@ namespace GTurtle
 
             surfaceWindow.Clear();  
 
-            //prepare the turtle
-            var turtle = new Turtle(surfaceWindow.DrawingCanvas, surfaceWindow.GetDrawingCanvasSize());
+           
 
             executionContext = Engine.CreateExecutionContext();
             executionContext.RegisterGetSource(getSourceUI);
-            executionContext.RegisterCommands(turtle.GetCommands());
+            executionContext.RegisterCommand("createturtle", new Func<Turtle>(createTurtle));
             executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
             executionContext.RegisterDebuggerStep(debuggerUpdateUI);
             executionContext.RegisterOnOutput(outputUpdateUI);
@@ -358,6 +357,10 @@ namespace GTurtle
                       
         }
 
+        private Turtle createTurtle()
+        {
+            return new Turtle(surfaceWindow.DrawingCanvas, surfaceWindow.GetDrawingCanvasSize());
+        }
 
         private void outputUpdateUI(string value)
         {
