@@ -110,12 +110,17 @@ namespace GScripting
             }
         }
 
-        public void RegisterCommands(Dictionary<string, object> commands)
+        public void RegisterCommand(string command_name, object command_impl)
         {
-            foreach (var cmd in commands)
+            _variableScope.SetVariable(command_name, command_impl);
+            _defaultCommands.Add(command_name, command_impl);
+        }
+
+        public void RegisterCommands(IDictionary<string,object> commands)
+        {
+            foreach(var cmd in commands)
             {
-                _variableScope.SetVariable(cmd.Key, cmd.Value);
-                _defaultCommands.Add(cmd.Key, cmd.Value);
+                RegisterCommand(cmd.Key, cmd.Value);
             }
         }
         

@@ -35,44 +35,20 @@ namespace GTurtle
         public Turtle(Canvas _canvas, SurfaceSize sz)
         {
             canvas = _canvas;
-            _origin_X = sz.Width / 2;
-            _origin_Y = sz.Height / 2;
-            currentBrush = new SolidColorBrush(Colors.Black);
-            currentThickness = 4.0;
 
-            turtleImage = new Image();
-            canvas.Children.Add(turtleImage);
-        }
+            canvas.Dispatcher.Invoke(
+                () =>
+                {
+                    _origin_X = sz.Width / 2;
+                    _origin_Y = sz.Height / 2;
+                    currentBrush = new SolidColorBrush(Colors.Black);
+                    currentThickness = 4.0;
 
+                    turtleImage = new Image();
+                    canvas.Children.Add(turtleImage);
+                }
+            );
 
-        public Dictionary<string, Object> GetCommands()
-        {
-            var cmd = new Dictionary<string, object>();
-            cmd.Add("go", new Action<double>(this.go));
-            cmd.Add("turn", new Action<double>(this.turn));
-            cmd.Add("aim", new Action<double>(this.aim));
-            cmd.Add("clear", new Action(this.clear));
-            cmd.Add("color", new Action<string>(this.color));
-            cmd.Add("go_to", new Action<double,double>(this.go_to));
-            cmd.Add("closed", new Action(this.closed));
-            cmd.Add("filled", new Action<string>(this.filled));
-            cmd.Add("image", new Action<string>(this.image));
-            cmd.Add("pen_down", new Action(this.pen_down));
-            cmd.Add("pen_up", new Action(this.pen_up));
-            cmd.Add("width", new Action<int>(this.width));
-            cmd.Add("jump", new Action<double, double>(this.jump));
-            cmd.Add("rectangle", new Action<double, double, double,double>(this.rectangle));
-            cmd.Add("line", new Action<double, double, double, double>(this.line));
-            cmd.Add("circle", new Action<double, double, double>(this.circle));
-            cmd.Add("bezier", new Action<double, double, double, double, double, double, double, double>(this.bezier));
-            cmd.Add("x", new Func<double>(this.x));
-            cmd.Add("y", new Func<double>(this.y));
-            cmd.Add("sleep", new Action<int>(this.sleep));
-            cmd.Add("nop", new Action(this.nop));
-            cmd.Add("show", new Action(this.show));
-            cmd.Add("hide", new Action(this.hide));
-
-            return cmd;
         }
 
         #region "TURTLE COMMANDS IMPLEMENTATION"
@@ -148,7 +124,7 @@ namespace GTurtle
             
         }
 
-        private void closed()
+        public void closed()
         {
             canvas.Dispatcher.Invoke(
                 () =>
@@ -162,7 +138,7 @@ namespace GTurtle
             );
         }
 
-        private void filled(string col_name)
+        public void filled(string col_name)
         {
             canvas.Dispatcher.Invoke(
                 () =>
@@ -259,13 +235,13 @@ namespace GTurtle
             
         }
 
-        private void hide()
+        public void hide()
         {
             canvas.Dispatcher.Invoke(
                 () => turtleImage.Visibility = Visibility.Hidden);
         }
 
-        private void show()
+        public void show()
         {
             canvas.Dispatcher.Invoke(
                 () => turtleImage.Visibility = Visibility.Visible);
@@ -318,10 +294,6 @@ namespace GTurtle
                         canvas.Children.Add(line);
                 }
             );
-        }
-
-        public void bezier(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
-        {
         }
 
         public void circle(double x, double y, double radius)
