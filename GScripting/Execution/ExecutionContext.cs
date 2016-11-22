@@ -212,7 +212,7 @@ namespace GScripting
         {
             await Task.Run(() => runScript());
         }
-
+        
         private void runScript()
         {
             _source = _getSource();
@@ -231,17 +231,17 @@ namespace GScripting
                     scriptSource.Execute(_variableScope);
                     _onScriptEnd?.Invoke(DebugInfo.CreateEmpty(this));
                 }
-                catch (Exception ex)
+                catch (ThreadAbortException)
                 {
                     if (request_stop)
                     {
                         Thread.ResetAbort();
                         _onStop?.Invoke(DebugInfo.CreateEmpty(this));
                     }
-                    else
-                    {
-                        _onError?.Invoke(DebugInfo.CreateError(ex, this));
-                    }
+                }
+                catch (Exception ex)
+                {
+                    _onError?.Invoke(DebugInfo.CreateError(ex, this));
                 }
                 finally
                 {

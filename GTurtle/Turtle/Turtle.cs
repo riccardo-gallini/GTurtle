@@ -254,18 +254,7 @@ namespace GTurtle
             canvas.Dispatcher.Invoke(
                 () => turtleImage.Visibility = Visibility.Visible);
         }
-
-        public void nop()
-        {
-            
-        }
-
-        public void sleep(int t)
-        {
-            System.Threading.Thread.Sleep(t);
-            //TODO: visual update?
-        }
-
+                
         public void rectangle(double x, double y, double width, double height)
         {
             double _x = _transform_X(x);

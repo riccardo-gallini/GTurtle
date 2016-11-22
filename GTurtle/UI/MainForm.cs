@@ -343,19 +343,27 @@ namespace GTurtle
             
             executionContext = Engine.CreateExecutionContext();
             executionContext.RegisterGetSource(getSourceUI);
-            executionContext.RegisterCommand("createturtle", new Func<Turtle>(createTurtle));
             executionContext.RegisterOnCheckBreakpoint(getBreakpointUI);
             executionContext.RegisterDebuggerStep(debuggerUpdateUI);
             executionContext.RegisterOnOutput(outputUpdateUI);
             executionContext.RegisterOnError(errorUpdateUI);
             executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
             executionContext.RegisterOnStop(scriptEndUpdateUI);
-                                
+            registerUtilityCommands(executionContext);
+
             if (requestPause) { executionContext.RequestPause(); }
 
             //exec the script
             await executionContext.RunAsync();
                       
+        }
+
+        private void registerUtilityCommands(ExecutionContext executionContext)
+        {
+            executionContext.RegisterCommand("createturtle", new Func<Turtle>(createTurtle));
+            executionContext.RegisterCommand("sleep", new Action<int>((t) => System.Threading.Thread.Sleep(t)));
+            executionContext.RegisterCommand("stop", new Action(() => executionContext.Stop()));
+            executionContext.RegisterCommand("pause", new Action(() => executionContext.RequestPause()));
         }
 
         private Turtle createTurtle()
