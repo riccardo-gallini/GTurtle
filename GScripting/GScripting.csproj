@@ -65,16 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IBreakpoint.cs" />
-    <Compile Include="DebugInfo.cs" />
+    <Compile Include="Execution\IBreakpoint.cs" />
+    <Compile Include="Execution\DebugInfo.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="ExecutionOutput.cs" />
-    <Compile Include="ExecutionContext.cs" />
-    <Compile Include="ExecutionVariable.cs" />
-    <Compile Include="ParseInfo.cs" />
-    <Compile Include="ParserService.cs" />
-    <Compile Include="ScriptError.cs" />
-    <Compile Include="ScriptErrorSink.cs" />
+    <Compile Include="Execution\ExecutionOutput.cs" />
+    <Compile Include="Execution\ExecutionContext.cs" />
+    <Compile Include="Execution\ExecutionVariable.cs" />
+    <Compile Include="Parsing\ParseInfo.cs" />
+    <Compile Include="Parsing\ParserService.cs" />
+    <Compile Include="Parsing\ScriptAstWalker.cs" />
+    <Compile Include="Parsing\ScriptError.cs" />
+    <Compile Include="Parsing\ScriptErrorSink.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

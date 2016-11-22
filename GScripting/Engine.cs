@@ -38,7 +38,6 @@ namespace GScripting
 
             var python_ast = parser.ParseFile(false);
 
-
             var info = new ParseInfo(parseErrorSink.Errors, python_ast);
 
             //no need for that

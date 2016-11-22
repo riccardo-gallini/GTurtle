@@ -13,6 +13,7 @@ namespace GScripting
     {
         public IList<ScriptError> Errors { get; }
         public PythonAst Ast { get; }
+        internal IDictionary<int, Node> codeMap { get; }
 
         public bool IsValid { get; }
         
@@ -20,9 +21,21 @@ namespace GScripting
         {
             this.Errors = errors;
             this.Ast = python_ast;
-            
+            codeMap = new Dictionary<int, Node>();
+
             if (errors.Count == 0) { this.IsValid = true; }
+            
+            var script_walker = new ScriptAstWalker(this);
+            python_ast.Walk(script_walker);
         }
 
+        public Node AstNodeAtOffset(int offset)
+        {
+            Node n;
+            codeMap.TryGetValue(offset, out n);
+
+            return n;
+        }
+        
     }
 }

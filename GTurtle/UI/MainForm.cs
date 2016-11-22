@@ -203,7 +203,8 @@ namespace GTurtle
                 () =>
                 {
                     codeErrorsWindow.ShowErrors(info.Errors);
-                    codeEditorWindow.MarkErrors(info.Errors);
+
+                    codeEditorWindow.SetParseInfo(info);
 
                     if (_status == WorkbenchStatus.Editing || _status == WorkbenchStatus.ParserError)
                     {
@@ -287,6 +288,7 @@ namespace GTurtle
 
         private void btnStepOut_Click(object sender, EventArgs e)
         {
+            setWorkbenchStatusUI(WorkbenchStatus.Running);
             executionContext.StepOut();
         }
 
@@ -302,6 +304,7 @@ namespace GTurtle
             }
             else if (_status == WorkbenchStatus.Paused)
             {
+                codeEditorWindow.RemoveAllDebugMarks();
                 executionContext.StepInto();
             }
         }
@@ -314,6 +317,7 @@ namespace GTurtle
             }
             else if (_status == WorkbenchStatus.Paused)
             {
+                setWorkbenchStatusUI(WorkbenchStatus.Running);
                 executionContext.StepOver();
             }
         }
@@ -326,6 +330,7 @@ namespace GTurtle
             }
             else if (_status == WorkbenchStatus.Paused)
             {
+                setWorkbenchStatusUI(WorkbenchStatus.Running);
                 executionContext.Continue();
             }
         }
@@ -333,7 +338,7 @@ namespace GTurtle
         private async Task doPlay(bool requestPause)
         {
             setWorkbenchStatusUI(WorkbenchStatus.Running);
-
+            
             surfaceWindow.Clear();  
 
            

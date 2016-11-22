@@ -21,6 +21,8 @@ namespace GScripting.CodeEditor
     public class EditorControl : TextEditor
     {
         
+        public ParseInfo ParseInfo { get; private set; }
+
         public EditorControl() : base()
         {
             this.ShowLineNumbers = false;
@@ -64,6 +66,19 @@ namespace GScripting.CodeEditor
             //textEditor.TextArea.IndentationStrategy
 
         }
+        
+        public void SetParseInfo(ParseInfo info)
+        {
+            ParseInfo = info;
+            
+            this.RemoveAllErrorMarks();
+
+            foreach (var err in info.Errors)
+            {
+                this.MarkError(err.SpanStartIndex, err.SpanLength, err.Message);
+            }
+        }
+
 
         #region " Breakpoints "
 
@@ -160,7 +175,7 @@ namespace GScripting.CodeEditor
             marker.MarkerColor = Colors.Red;
             marker.ToolTip = message;
         }
-
+        
         public void RemoveAllDebugMarks()
         {
             textMarkerService.RemoveAll((m) => (ResolverMarkerType)m.Tag == ResolverMarkerType.DebugCurrentLine);
@@ -189,10 +204,12 @@ namespace GScripting.CodeEditor
 
             this.ScrollToLine(line);
         }
-        
+
         #endregion
 
-        #region " Editor Tooltip "
+        #endregion
+
+        #region " Editor Tooltips "
 
         private ToolTip toolTip;
 
@@ -208,16 +225,28 @@ namespace GScripting.CodeEditor
                 var markersAtOffset = textMarkerService.GetMarkersAtOffset(offset);
                 ITextMarker markerWithToolTip = markersAtOffset.FirstOrDefault(marker => marker.ToolTip != null);
 
-                if (markerWithToolTip != null)
+                var ast_node = ParseInfo?.AstNodeAtOffset(offset);
+
+                if (markerWithToolTip != null || ast_node != null)
                 {
                     if (toolTip == null)
                     {
+                        var toolTipText = "";
+                        if (markerWithToolTip!=null && markerWithToolTip.ToolTip != null)
+                        {
+                            toolTipText += (string)markerWithToolTip.ToolTip;
+                        }
+                        if (ast_node!=null)
+                        {
+                            toolTipText += ast_node.ToString();
+                        }
+
                         toolTip = new ToolTip();
                         toolTip.Closed += ToolTipClosed;
                         toolTip.PlacementTarget = this;
                         toolTip.Content = new TextBlock
                         {
-                            Text = (string)markerWithToolTip.ToolTip,
+                            Text = toolTipText,
                             TextWrapping = TextWrapping.Wrap
                         };
                         toolTip.IsOpen = true;
@@ -226,6 +255,7 @@ namespace GScripting.CodeEditor
                 }
             }
         }
+
 
         void ToolTipClosed(object sender, RoutedEventArgs e)
         {
@@ -248,8 +278,6 @@ namespace GScripting.CodeEditor
                 toolTip.IsOpen = false;
             }
         }
-
-        #endregion
 
         #endregion
 
@@ -281,7 +309,7 @@ namespace GScripting.CodeEditor
 
         #endregion
 
-        #region Completion Window
+        #region " Completion Window "
 
         CompletionWindow completionWindow;
 

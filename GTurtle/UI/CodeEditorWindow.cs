@@ -69,14 +69,9 @@ namespace GTurtle
             updateWindowCaption();
         }
 
-        public void MarkErrors(IList<ScriptError> errorList)
+        public void SetParseInfo(ParseInfo info)
         {
-            editor.RemoveAllErrorMarks();
-
-            foreach(var err in errorList)
-            {
-                editor.MarkError(err.SpanStartIndex, err.SpanLength, err.Message);
-            }
+            editor.SetParseInfo(info);
         }
               
         public void NavigateToLine(int line)
