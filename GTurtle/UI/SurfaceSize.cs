@@ -22,9 +22,11 @@ namespace GTurtle
         {
             var _list = new List<SurfaceSize>();
 
-            _list.Add(new SurfaceSize(800, 600));
-            _list.Add(new SurfaceSize(1800, 1600));
             _list.Add(new SurfaceSize(4000, 3000));
+            _list.Add(new SurfaceSize(1800, 1600));
+            _list.Add(new SurfaceSize(800, 600));
+            
+
 
             return _list;
         }

@@ -67,10 +67,10 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Surface\ZoomBorder.cs" />
     <Compile Include="Surface\TurtleCanvas.xaml.cs">
       <DependentUpon>TurtleCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Surface\ZoomBorder.cs" />
     <Compile Include="UI\Util\KeyPreviewElementHost.cs" />
     <Compile Include="UI\WatchWindow.cs">
       <SubType>Form</SubType>
@@ -158,13 +158,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\newscript.py" />
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="Surface\TurtleCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\newscript.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

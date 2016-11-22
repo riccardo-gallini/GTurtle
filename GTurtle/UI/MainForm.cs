@@ -340,9 +340,7 @@ namespace GTurtle
             setWorkbenchStatusUI(WorkbenchStatus.Running);
             
             surfaceWindow.Clear();  
-
-           
-
+            
             executionContext = Engine.CreateExecutionContext();
             executionContext.RegisterGetSource(getSourceUI);
             executionContext.RegisterCommand("createturtle", new Func<Turtle>(createTurtle));
@@ -357,8 +355,6 @@ namespace GTurtle
 
             //exec the script
             await executionContext.RunAsync();
-
-            surfaceWindow.UpdateVisual(); 
                       
         }
 
@@ -382,7 +378,6 @@ namespace GTurtle
                 () =>
                     {
                         codeEditorWindow.MarkDebugLine(info.CurrentLine, isError:false);
-                        surfaceWindow.UpdateVisual();
                         watchWindow.ShowScope(info.ExecutionScope);
                         setWorkbenchStatusUI(WorkbenchStatus.Paused);
                     });
@@ -399,7 +394,6 @@ namespace GTurtle
                 () =>
                 {
                     codeEditorWindow.MarkDebugLine(info.CurrentLine, info.IsError, message:info.Message);
-                    surfaceWindow.UpdateVisual();
                     watchWindow.ShowScope(info.ExecutionScope);
                     setWorkbenchStatusUI(WorkbenchStatus.ExecutionError);
                 });
@@ -514,7 +508,7 @@ namespace GTurtle
     }
 
         #endregion
-       
+
     }
 
     public enum WorkbenchStatus

@@ -9,7 +9,7 @@
     <Grid>
 
         <surface:ZoomBorder x:Name="zoomBorder" ClipToBounds="True" Background="LightGray">
-            <Border x:Name="canvasBorder" BorderBrush="Black" BorderThickness="1">
+            <Border x:Name="canvasBorder" BorderBrush="Black" BorderThickness="1" Margin="2 2 2 2">
                 <Canvas x:Name="drawingCanvas" Background="White">
                 </Canvas>
             </Border>

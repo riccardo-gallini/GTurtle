@@ -57,13 +57,7 @@ namespace GTurtle
         public void Clear()
         {
             canvasControl.drawingCanvas.Children.Clear();
-            UpdateVisual();
         }
-
-        public void UpdateVisual()
-        {
-            
-        }
-                
+              
     }
 }

@@ -57,9 +57,9 @@ namespace GTurtle
             this.dockPanel.ActiveAutoHideContent = null;
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockPanel.Location = new System.Drawing.Point(0, 39);
-            this.dockPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.dockPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(754, 334);
+            this.dockPanel.Size = new System.Drawing.Size(1005, 422);
             this.dockPanel.TabIndex = 3;
             // 
             // toolStrip
@@ -80,7 +80,7 @@ namespace GTurtle
             this.cmbSurfaceSize});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(754, 39);
+            this.toolStrip.Size = new System.Drawing.Size(1005, 39);
             this.toolStrip.TabIndex = 6;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -133,7 +133,7 @@ namespace GTurtle
             this.btnPlay.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btnPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(70, 36);
+            this.btnPlay.Size = new System.Drawing.Size(77, 36);
             this.btnPlay.Text = "PLAY";
             this.btnPlay.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnPlay.ToolTipText = "Play";
@@ -144,7 +144,7 @@ namespace GTurtle
             this.btnStop.Image = ((System.Drawing.Image)(resources.GetObject("btnStop.Image")));
             this.btnStop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(59, 36);
+            this.btnStop.Size = new System.Drawing.Size(67, 36);
             this.btnStop.Text = "STOP";
             this.btnStop.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
@@ -154,7 +154,7 @@ namespace GTurtle
             this.btnPause.Image = ((System.Drawing.Image)(resources.GetObject("btnPause.Image")));
             this.btnPause.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(65, 36);
+            this.btnPause.Size = new System.Drawing.Size(76, 36);
             this.btnPause.Text = "PAUSE";
             this.btnPause.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
@@ -164,7 +164,7 @@ namespace GTurtle
             this.btnStepInto.Image = ((System.Drawing.Image)(resources.GetObject("btnStepInto.Image")));
             this.btnStepInto.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStepInto.Name = "btnStepInto";
-            this.btnStepInto.Size = new System.Drawing.Size(87, 36);
+            this.btnStepInto.Size = new System.Drawing.Size(102, 36);
             this.btnStepInto.Text = "STEP INTO";
             this.btnStepInto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStepInto.Click += new System.EventHandler(this.btnStepInto_Click);
@@ -174,7 +174,7 @@ namespace GTurtle
             this.btnStepOver.Image = ((System.Drawing.Image)(resources.GetObject("btnStepOver.Image")));
             this.btnStepOver.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStepOver.Name = "btnStepOver";
-            this.btnStepOver.Size = new System.Drawing.Size(89, 36);
+            this.btnStepOver.Size = new System.Drawing.Size(106, 36);
             this.btnStepOver.Text = "STEP OVER";
             this.btnStepOver.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStepOver.Click += new System.EventHandler(this.btnStepOver_Click);
@@ -184,7 +184,7 @@ namespace GTurtle
             this.btnStepOut.Image = ((System.Drawing.Image)(resources.GetObject("btnStepOut.Image")));
             this.btnStepOut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStepOut.Name = "btnStepOut";
-            this.btnStepOut.Size = new System.Drawing.Size(84, 36);
+            this.btnStepOut.Size = new System.Drawing.Size(98, 36);
             this.btnStepOut.Text = "STEP OUT";
             this.btnStepOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStepOut.Click += new System.EventHandler(this.btnStepOut_Click);
@@ -201,7 +201,7 @@ namespace GTurtle
             this.cmbSurfaceSize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbSurfaceSize.Name = "cmbSurfaceSize";
             this.cmbSurfaceSize.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.cmbSurfaceSize.Size = new System.Drawing.Size(92, 23);
+            this.cmbSurfaceSize.Size = new System.Drawing.Size(121, 28);
             this.cmbSurfaceSize.ToolTipText = "Surface Size";
             this.cmbSurfaceSize.SelectedIndexChanged += new System.EventHandler(this.cmbSurfaceSize_SelectedIndexChanged);
             // 
@@ -210,29 +210,29 @@ namespace GTurtle
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 373);
+            this.statusStrip.Location = new System.Drawing.Point(0, 461);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip.Size = new System.Drawing.Size(754, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
+            this.statusStrip.Size = new System.Drawing.Size(1005, 25);
             this.statusStrip.TabIndex = 7;
             this.statusStrip.Text = "statusStrip1";
             // 
             // stLabel
             // 
             this.stLabel.Name = "stLabel";
-            this.stLabel.Size = new System.Drawing.Size(41, 17);
+            this.stLabel.Size = new System.Drawing.Size(53, 20);
             this.stLabel.Text = "Label1";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(754, 395);
+            this.ClientSize = new System.Drawing.Size(1005, 486);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStrip);
             this.IsMdiContainer = true;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GTurtle";

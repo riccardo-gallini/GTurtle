@@ -20,6 +20,7 @@ namespace GTurtle
         private double _currentPathStartY;
 
         private Image turtleImage;
+        private bool hasImage;
 
         private double _origin_X;
         private double _origin_Y;
@@ -160,15 +161,20 @@ namespace GTurtle
             _orientation = angle;
             _orientation = Math.IEEERemainder(_orientation, 360);
 
-            canvas.Dispatcher.Invoke(
-                ()=>
-                    {
-                        turtleImage.RenderTransform = 
-                                new RotateTransform(angle, 
-                                                    turtleImage.Width / 2, 
-                                                    turtleImage.Height / 2);
-                    }
-            );
+            if (hasImage)
+            {
+
+                canvas.Dispatcher.Invoke(
+                    () =>
+                        {
+                            turtleImage.RenderTransform =
+                                    new RotateTransform(angle,
+                                                        turtleImage.Width / 2,
+                                                        turtleImage.Height / 2);
+                        }
+                );
+
+            }
 
         }
 
@@ -218,14 +224,16 @@ namespace GTurtle
 
         public void image(string url)
         {
+            hasImage = true;
+
             canvas.Dispatcher.Invoke(
                 () =>
                 {
                     var source = new BitmapImage(new Uri(url));
                     
                     turtleImage.Source = source;
-                    turtleImage.Height = 40;
-                    turtleImage.Width = 40;
+                    turtleImage.Height = 35;
+                    turtleImage.Width = 35;
                     
                 }
             );
