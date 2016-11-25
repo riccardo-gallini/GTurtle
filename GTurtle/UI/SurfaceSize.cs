@@ -24,7 +24,7 @@ namespace GTurtle
 
             _list.Add(new SurfaceSize(4000, 3000));
             _list.Add(new SurfaceSize(1800, 1600));
-            _list.Add(new SurfaceSize(800, 600));
+            _list.Add(new SurfaceSize(900, 700));
             
 
 

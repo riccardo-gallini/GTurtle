@@ -7,14 +7,34 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <ScrollViewer Name="scrollViewer" Grid.Column="1" 
+              VerticalScrollBarVisibility="Visible" 
+              HorizontalScrollBarVisibility="Visible">
 
-        <surface:ZoomBorder x:Name="zoomBorder" ClipToBounds="True" Background="LightGray">
-            <Border x:Name="canvasBorder" BorderBrush="Black" BorderThickness="1" Margin="2 2 2 2">
-                <Canvas x:Name="drawingCanvas" Background="White">
-                </Canvas>
-            </Border>
-        </surface:ZoomBorder>
+            <Grid Name="grid" Width="400" 
+              Height="400" RenderTransformOrigin="0.5,0.5">
+                <Grid.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="scaleTransform"/>
+                    </TransformGroup>
+                </Grid.LayoutTransform>
+                <Viewbox Grid.Column="0" Grid.Row="0">
+                    <ContentPresenter Content="{StaticResource Kompass}"/>
+                </Viewbox>
+            </Grid>
+
+        </ScrollViewer>
 
 
+
+
+        <!--<ScrollViewer>
+            <surface:ZoomBorder x:Name="zoomBorder" ClipToBounds="True" Background="LightGray">
+                <Border x:Name="canvasBorder" BorderBrush="Black" BorderThickness="1" Margin="2 2 2 2">
+                    <Canvas x:Name="drawingCanvas" Background="White">
+                    </Canvas>
+                </Border>
+            </surface:ZoomBorder>
+        </ScrollViewer>-->
     </Grid>
 </UserControl>

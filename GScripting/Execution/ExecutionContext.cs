@@ -208,6 +208,11 @@ namespace GScripting
             resume_execution();
         }
 
+        public void Sleep(int ms)
+        {
+            Thread.Sleep(ms);
+        }
+
         public async Task RunAsync()
         {
             await Task.Run(() => runScript());

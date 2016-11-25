@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-using Cyotek.Windows.Forms;
 using System.Drawing;
 using GTurtle.Surface;
 using System.Windows.Controls;
@@ -30,8 +29,22 @@ namespace GTurtle
 
             canvasControl = new TurtleCanvas();
             wpf_host.Child = canvasControl;
-                       
+
+            canvasControl.ReportMouseMove =
+                    (point) =>
+                    {
+                        _mainForm.stMousePosition.Text = "(" + ((int)point.X).ToString() + "," + ((int)point.Y).ToString() + ")";
+                    };
+
         }
+
+        public void Clear()
+        {
+            canvasControl.Clear();
+        }
+
+        public double CanvasHeight { get; private set; }
+        public double CanvasWidth { get; private set;  }
 
         public Canvas DrawingCanvas
         {
@@ -41,23 +54,13 @@ namespace GTurtle
             }
         }
 
-        public void SetDrawingCanvasSize(SurfaceSize sz)
+        public void SetCanvasSize(SurfaceSize sz)
         {
-            surfaceSize = sz;
-            canvasControl.canvasBorder.Height = surfaceSize.Height;
-            canvasControl.canvasBorder.Width = surfaceSize.Width;
-            Clear();
+            CanvasHeight = sz.Height;
+            CanvasWidth = sz.Width;
+            canvasControl.SetDrawingCanvasSize(sz.Height, sz.Width);
         }
-
-        public SurfaceSize GetDrawingCanvasSize()
-        {
-            return surfaceSize;
-        }
-
-        public void Clear()
-        {
-            canvasControl.drawingCanvas.Children.Clear();
-        }
+        
               
     }
 }

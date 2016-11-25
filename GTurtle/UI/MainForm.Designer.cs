@@ -48,6 +48,7 @@ namespace GTurtle
             this.cmbSurfaceSize = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.stLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -209,7 +210,8 @@ namespace GTurtle
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stLabel});
+            this.stLabel,
+            this.stMousePosition});
             this.statusStrip.Location = new System.Drawing.Point(0, 461);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
@@ -222,6 +224,12 @@ namespace GTurtle
             this.stLabel.Name = "stLabel";
             this.stLabel.Size = new System.Drawing.Size(53, 20);
             this.stLabel.Text = "Label1";
+            // 
+            // stMousePosition
+            // 
+            this.stMousePosition.Name = "stMousePosition";
+            this.stMousePosition.Size = new System.Drawing.Size(38, 20);
+            this.stMousePosition.Text = "(0,0)";
             // 
             // MainForm
             // 
@@ -264,5 +272,6 @@ namespace GTurtle
         private System.Windows.Forms.ToolStripButton btnStepOut;
         private System.Windows.Forms.ToolStripStatusLabel stLabel;
         private System.Windows.Forms.ToolStripButton btnPause;
+        internal ToolStripStatusLabel stMousePosition;
     }
 }

@@ -33,15 +33,15 @@ namespace GTurtle
         private Canvas canvas;
                
         
-        public Turtle(Canvas _canvas, SurfaceSize sz)
+        public Turtle(Canvas _canvas, double CanvasHeight, double CanvasWidth)
         {
             canvas = _canvas;
 
             canvas.Dispatcher.Invoke(
                 () =>
                 {
-                    _origin_X = sz.Width / 2;
-                    _origin_Y = sz.Height / 2;
+                    _origin_X = CanvasWidth / 2;
+                    _origin_Y = CanvasHeight / 2;
                     currentBrush = new SolidColorBrush(Colors.Black);
                     currentThickness = 4.0;
 
@@ -67,13 +67,16 @@ namespace GTurtle
             _pos_X = x;
             _pos_Y = y;
 
-            canvas.Dispatcher.Invoke(
-                () =>
-                {
-                    Canvas.SetTop(turtleImage, _transform_Y(_pos_Y) - turtleImage.Height/2);
-                    Canvas.SetLeft(turtleImage, _transform_X(_pos_X) - turtleImage.Width/2);
-                }
-            );
+            if (hasImage)
+            {
+                canvas.Dispatcher.Invoke(
+                    () =>
+                    {
+                        Canvas.SetTop(turtleImage, _transform_Y(_pos_Y) - turtleImage.Height / 2);
+                        Canvas.SetLeft(turtleImage, _transform_X(_pos_X) - turtleImage.Width / 2);
+                    }
+                );
+            }
         }
 
         public void go_to(double to_x, double to_y)

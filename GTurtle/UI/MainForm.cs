@@ -361,14 +361,14 @@ namespace GTurtle
         private void registerUtilityCommands(ExecutionContext executionContext)
         {
             executionContext.RegisterCommand("createturtle", new Func<Turtle>(createTurtle));
-            executionContext.RegisterCommand("sleep", new Action<int>((t) => System.Threading.Thread.Sleep(t)));
+            executionContext.RegisterCommand("sleep", new Action<int>((t) => executionContext.Sleep(t)));
             executionContext.RegisterCommand("stop", new Action(() => executionContext.Stop()));
             executionContext.RegisterCommand("pause", new Action(() => executionContext.RequestPause()));
         }
 
         private Turtle createTurtle()
         {
-            return new Turtle(surfaceWindow.DrawingCanvas, surfaceWindow.GetDrawingCanvasSize());
+            return new Turtle(surfaceWindow.DrawingCanvas, surfaceWindow.CanvasHeight, surfaceWindow.CanvasWidth);
         }
 
         private void outputUpdateUI(string value)
@@ -511,7 +511,7 @@ namespace GTurtle
             if (cmbSurfaceSize.SelectedItem != null)
             {
                 var sz = (SurfaceSize)cmbSurfaceSize.SelectedItem;
-                surfaceWindow.SetDrawingCanvasSize(sz);
+                surfaceWindow.SetCanvasSize(sz);
             }
     }
 
