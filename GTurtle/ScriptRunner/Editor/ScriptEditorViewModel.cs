@@ -27,7 +27,7 @@ namespace GTurtle
 
             _view.TextChanged += textChanged;
 
-            parserService = IoC.Get<MainModule>().CreateParserService();
+            parserService = IoC.Get<ScriptRunnerModule>().CreateParserService();
             parserService.RegisterGetSource(getSource);
             parserService.RegisterOnParseFinished(parseFinished);
             parserService.Start();
@@ -128,6 +128,16 @@ namespace GTurtle
         }
 
         #endregion
+
+        public void MarkDebugLine(int currentLine, bool isError, string message = "")
+        {
+            _view.MarkDebugLine(currentLine, isError, message);
+        }
+
+        public IBreakpoint GetBreakpoint(int line)
+        {
+            return _view.GetBreakpoint(line);
+        }
 
         void ICommandHandler<ToggleBreakpoint>.Update(Command command)
         {

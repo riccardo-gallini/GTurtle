@@ -131,24 +131,25 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Commands\Editor\NewScript.cs" />
-    <Compile Include="Commands\Execution\Pause.cs" />
-    <Compile Include="Commands\Execution\Play.cs" />
-    <Compile Include="Commands\Execution\StepInto.cs" />
-    <Compile Include="Commands\Execution\StepOut.cs" />
-    <Compile Include="Commands\Execution\StepOver.cs" />
-    <Compile Include="Commands\Execution\Stop.cs" />
-    <Compile Include="Commands\Editor\ToggleBreakpoint.cs" />
-    <Compile Include="Execution.cs" />
-    <Compile Include="ExecuteMenuDefinitions.cs" />
-    <Compile Include="ScriptEditorProvider.cs" />
-    <Compile Include="ScriptEditorView.cs" />
-    <Compile Include="ScriptEditorViewModel.cs" />
-    <Compile Include="Surface\TurtleCanvas.xaml.cs">
+    <Compile Include="ScriptRunner\Editor\Commands\NewScript.cs" />
+    <Compile Include="ScriptRunner\Runner\Commands\Pause.cs" />
+    <Compile Include="ScriptRunner\Runner\Commands\Play.cs" />
+    <Compile Include="ScriptRunner\Runner\Commands\StepInto.cs" />
+    <Compile Include="ScriptRunner\Runner\Commands\StepOut.cs" />
+    <Compile Include="ScriptRunner\Runner\Commands\StepOver.cs" />
+    <Compile Include="ScriptRunner\Runner\Commands\Stop.cs" />
+    <Compile Include="ScriptRunner\Editor\Commands\ToggleBreakpoint.cs" />
+    <Compile Include="ScriptRunner\Runner\ScriptRunner.cs" />
+    <Compile Include="ScriptRunner\Runner\MenuDefinitions.cs" />
+    <Compile Include="ScriptRunner\Editor\ScriptEditorProvider.cs" />
+    <Compile Include="ScriptRunner\Editor\ScriptEditorView.cs" />
+    <Compile Include="ScriptRunner\Editor\ScriptEditorViewModel.cs" />
+    <Compile Include="ScriptRunner\StatusBar.cs" />
+    <Compile Include="Turtle\Surface\TurtleCanvas.xaml.cs">
       <DependentUpon>TurtleCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Surface\ZoomBorder.cs" />
-    <Compile Include="MainModule.cs" />
+    <Compile Include="Turtle\Surface\ZoomBorder.cs" />
+    <Compile Include="ScriptRunner\ScriptRunnerModule.cs" />
     <Compile Include="UI\Util\KeyPreviewElementHost.cs" />
     <Compile Include="UI\WatchWindow.cs">
       <SubType>Form</SubType>
@@ -169,7 +170,7 @@
     <Compile Include="UI\OutputWindow.Designer.cs">
       <DependentUpon>OutputWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\SurfaceSize.cs" />
+    <Compile Include="Turtle\SurfaceSize.cs" />
     <Compile Include="UI\SurfaceWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,7 +240,7 @@
     <EmbeddedResource Include="UI\newscript.py" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Surface\TurtleCanvas.xaml">
+    <Page Include="Turtle\Surface\TurtleCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,9 +263,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\Show\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
