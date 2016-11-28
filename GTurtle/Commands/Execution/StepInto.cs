@@ -1,9 +1,11 @@
 ﻿using Gemini.Framework.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GTurtle.Commands
 {
@@ -33,6 +35,10 @@ namespace GTurtle.Commands
                 return "Step Into";
             }
         }
+
+        [Export]
+        public static CommandKeyboardShortcut StepIntoShortcut = new CommandKeyboardShortcut<StepInto>(new KeyGesture(Key.F11));
+
     }
-    
+
 }

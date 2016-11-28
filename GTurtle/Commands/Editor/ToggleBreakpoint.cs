@@ -1,9 +1,11 @@
 ﻿using Gemini.Framework.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GTurtle.Commands
 {
@@ -33,7 +35,11 @@ namespace GTurtle.Commands
                 return "Toggle Breakpoint";
             }
         }
+
+        [Export]
+        public static CommandKeyboardShortcut ToggleBreakpointShortcut = new CommandKeyboardShortcut<ToggleBreakpoint>(new KeyGesture(Key.F9));
+
     }
-       
+
 }
 
