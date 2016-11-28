@@ -71,7 +71,7 @@ namespace GTurtle
 
         public void SetParseInfo(ParseInfo info)
         {
-            editor.SetParseInfo(info);
+            editor.ParseInfo = info;
         }
               
         public void NavigateToLine(int line)

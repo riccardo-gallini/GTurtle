@@ -23,6 +23,14 @@ namespace GScripting
             }
         }
 
+        public int Column
+        {
+            get
+            {
+                return Span.Start.Column;
+            }
+        }
+
         public int SpanStartIndex
         {
             get
