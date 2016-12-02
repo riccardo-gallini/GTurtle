@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GTurtle
 {
@@ -45,6 +46,11 @@ namespace GTurtle
 
             _view.TextChanged += textChanged;
 
+            //manage dropping image files on code text in order to import an image command
+            _view.RegisterDropDataFormat(System.Windows.DataFormats.FileDrop);
+            _view.GetDropData = getTextFromDataObject;
+
+            //parser service
             parserService = IoC.Get<ScriptRunnerModule>().CreateParserService();
             parserService.RegisterGetSource(getSource);
             parserService.RegisterOnParseFinished(parseFinished);
@@ -126,10 +132,10 @@ namespace GTurtle
             _view.Save(filePath);
             return Task.CompletedTask;
         }
-
+        
         #endregion
 
-        #region DEBUG
+        #region DEBUGGING
 
         public void MarkDebugLine(int currentLine, bool isError, string message = "")
         {
@@ -284,15 +290,29 @@ namespace GTurtle
 
         #endregion
 
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-        }
-
         protected override void OnDeactivate(bool close)
         {
             parserService.Stop();
         }
+
+        #region "DROP IMG FILES INTO SCRIPT"
+
+        private string getTextFromDataObject(DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            {
+                string[] data = (string[])e.DataObject.GetData(System.Windows.DataFormats.FileDrop);
+
+                if (data.Length > 0)
+                {
+                    var uri = new System.Uri(data[0]);
+                    return "\"" + uri.AbsoluteUri + "\"";
+                }
+            }
+            return null;
+        }
+
+        #endregion
 
     }
 

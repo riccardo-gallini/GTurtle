@@ -31,41 +31,7 @@
 						x:Name="content"
 						Background="White"
 						>
-                    <!--
-						Add some rectangles that the user can drag about.
-						-->
-                    <Rectangle
-							Canvas.Left="50"
-							Canvas.Top="50"
-							Width="80"
-							Height="150"
-							Fill="Blue"
-														
-							/>
-                    <Rectangle
-							Canvas.Left="550"
-							Canvas.Top="350"
-							Width="80"
-							Height="150"
-							Fill="Green"
-														
-							/>
-                    <Rectangle
-							Canvas.Left="850"
-							Canvas.Top="850"
-							Width="30"
-							Height="20"
-							Fill="Purple"
-							
-							/>
-                    <Rectangle
-							Canvas.Left="1850"
-							Canvas.Top="1850"
-							Width="80"
-							Height="150"
-							Fill="Red"
-							
-							/>
+                    
                 </Canvas>
 
                 <!--
