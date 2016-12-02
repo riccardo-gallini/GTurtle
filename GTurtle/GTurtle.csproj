@@ -131,94 +131,40 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ScriptRunner\Editor\Commands\NewScript.cs" />
-    <Compile Include="ScriptRunner\Runner\Commands\Pause.cs" />
-    <Compile Include="ScriptRunner\Runner\Commands\Play.cs" />
-    <Compile Include="ScriptRunner\Runner\Commands\StepInto.cs" />
-    <Compile Include="ScriptRunner\Runner\Commands\StepOut.cs" />
-    <Compile Include="ScriptRunner\Runner\Commands\StepOver.cs" />
-    <Compile Include="ScriptRunner\Runner\Commands\Stop.cs" />
-    <Compile Include="ScriptRunner\Editor\Commands\ToggleBreakpoint.cs" />
-    <Compile Include="ScriptRunner\Runner\ScriptRunner.cs" />
-    <Compile Include="ScriptRunner\Runner\MenuDefinitions.cs" />
-    <Compile Include="ScriptRunner\Editor\ScriptEditorProvider.cs" />
-    <Compile Include="ScriptRunner\Editor\ScriptEditorView.cs" />
-    <Compile Include="ScriptRunner\Editor\ScriptEditorViewModel.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\NewScript.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\Pause.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\Play.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\StepInto.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\StepOut.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\StepOver.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\Stop.cs" />
+    <Compile Include="ScriptRunner\Script\Commands\ToggleBreakpoint.cs" />
+    <Compile Include="ScriptRunner\Script\ExecutionService.cs" />
+    <Compile Include="ScriptRunner\MenuDefinitions.cs" />
+    <Compile Include="ScriptRunner\Script\ScriptEditorProvider.cs" />
+    <Compile Include="ScriptRunner\Script\ScriptView.cs" />
+    <Compile Include="ScriptRunner\Script\ScriptViewModel.cs" />
     <Compile Include="ScriptRunner\StatusBar.cs" />
-    <Compile Include="Turtle\Surface\TurtleCanvas.xaml.cs">
-      <DependentUpon>TurtleCanvas.xaml</DependentUpon>
+    <Compile Include="ScriptRunner\Watch\WatchViewModel.cs" />
+    <Compile Include="Turtle\TurtleAreaView.xaml.cs">
+      <DependentUpon>TurtleAreaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Turtle\Surface\ZoomBorder.cs" />
     <Compile Include="ScriptRunner\ScriptRunnerModule.cs" />
-    <Compile Include="UI\Util\KeyPreviewElementHost.cs" />
-    <Compile Include="UI\WatchWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\WatchWindow.Designer.cs">
-      <DependentUpon>WatchWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Util\InvokeExtensions.cs" />
-    <Compile Include="UI\CodeErrorsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CodeErrorsWindow.Designer.cs">
-      <DependentUpon>CodeErrorsWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\OutputWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\OutputWindow.Designer.cs">
-      <DependentUpon>OutputWindow.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Turtle\TurtleAreaViewModel.cs" />
     <Compile Include="Turtle\SurfaceSize.cs" />
-    <Compile Include="UI\SurfaceWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\SurfaceWindow.Designer.cs">
-      <DependentUpon>SurfaceWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\CodeEditorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\CodeEditorWindow.Designer.cs">
-      <DependentUpon>CodeEditorWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Turtle\Turtle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Turtle\TurtleScript.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\WatchWindow.resx">
-      <DependentUpon>WatchWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CodeErrorsWindow.resx">
-      <DependentUpon>CodeErrorsWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\CodeEditorWindow.resx">
-      <DependentUpon>CodeEditorWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\OutputWindow.resx">
-      <DependentUpon>OutputWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\SurfaceWindow.resx">
-      <DependentUpon>SurfaceWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -235,12 +181,16 @@
       <Project>{ec912fa9-3b5f-47ea-bde6-3253bd6f4d6f}</Project>
       <Name>GScripting</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ZoomAndPan\ZoomAndPan.csproj">
+      <Project>{468adede-6f5e-40c0-99c9-c6dac4fac934}</Project>
+      <Name>ZoomAndPan</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\newscript.py" />
+    <EmbeddedResource Include="Turtle\newscript.py" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Turtle\Surface\TurtleCanvas.xaml">
+    <Page Include="Turtle\TurtleAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,7 +213,9 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UI\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
