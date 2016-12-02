@@ -33,15 +33,15 @@ namespace GTurtle
         private Canvas canvas;
                
         
-        public Turtle(Canvas _canvas, double CanvasHeight, double CanvasWidth)
+        public Turtle(TurtleAreaViewModel _turtleArea)
         {
-            canvas = _canvas;
-
+            canvas = _turtleArea.Content;
+            
             canvas.Dispatcher.Invoke(
                 () =>
                 {
-                    _origin_X = CanvasWidth / 2;
-                    _origin_Y = CanvasHeight / 2;
+                    _origin_X = _turtleArea.ContentWidth / 2;
+                    _origin_Y = _turtleArea.ContentHeight / 2;
                     currentBrush = new SolidColorBrush(Colors.Black);
                     currentThickness = 4.0;
 

@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
 using Gemini.Framework;
+using Gemini.Framework.Commands;
 using Gemini.Modules.ErrorList;
 using Gemini.Modules.Output;
 using GScripting;
+using GTurtle.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -18,30 +20,28 @@ namespace GTurtle
     [Export(typeof(IModule))]
     [Export(typeof(ScriptRunnerModule))]
     public class ScriptRunnerModule : ModuleBase
+
     {
         public Engine GScriptEngine { get; private set; }
         public StatusBar StatusBar { get; private set; }
-        public ScriptRunner ScriptRunner { get; private set; }
         public IOutput Output { get; private set; }
         public IErrorList ErrorList { get; private set; }
+        public WatchViewModel Watch { get; private set; }
         
-        public WorkbenchStatus CurrentStatus { get; set; }
+        public ScriptStatus CurrentStatus { get; set; }
+
+        //TODO: move away from here ==> have an all new turtle module
+        public TurtleAreaViewModel TurtleArea { get; private set; }
 
         public override void Initialize()
         {
-            Shell.ActiveDocumentChanged += Shell_ActiveDocumentChanged;
-
             //create scripting engine
             GScriptEngine = new Engine();
-
-            //create the script runner (will handle the script execution UI)
-            ScriptRunner = new GTurtle.ScriptRunner(this);
 
             //status and tool bars
             StatusBar = new StatusBar();
             StatusBar.Initialize();
-            GlobalStatus = GlobalStatus.Editing;
-                
+                           
             Shell.ToolBars.Visible = true;
 
             //show error window by default
@@ -51,38 +51,13 @@ namespace GTurtle
             //show output window by default
             Output = IoC.Get<IOutput>();
             Shell.ShowTool(Output);
-                        
-        }
-        
-        private void Shell_ActiveDocumentChanged(object sender, EventArgs e)
-        {
-            if (Shell.ActiveItem is ScriptEditorViewModel)
-            {
-                _activeScript = (ScriptEditorViewModel)Shell.ActiveItem;
-            }
-        }
 
-        private ScriptEditorViewModel _activeScript;
-        public ScriptEditorViewModel ActiveScript
-        {
-            get
-            {
-                return _activeScript;
-            }
-        }
+            //watch tool
+            Watch = new WatchViewModel();
 
-        private GlobalStatus globalStatus;
-        public GlobalStatus GlobalStatus
-        {
-            get
-            {
-                return globalStatus;                
-            }
-            set
-            {
-                globalStatus = value;
-                StatusBar.SetGlobalStatusMessage(globalStatus);
-            }
+            //show the turtle surface
+            TurtleArea = new TurtleAreaViewModel();
+            Shell.OpenDocument(TurtleArea);
         }
 
         public ParserService CreateParserService()
@@ -97,15 +72,10 @@ namespace GTurtle
 
         public Turtle CreateTurtle()
         {
-            return new Turtle(SurfaceWindow.DrawingCanvas, SurfaceWindow.CanvasHeight, SurfaceWindow.CanvasWidth);
+            return new Turtle(TurtleArea);
         }
+        
     }
 
-    public enum GlobalStatus
-    {
-        Editing = 1,
-        Running = 2,
-        Paused = 3,
-        ExecutionError = 4
-    }
+
 }

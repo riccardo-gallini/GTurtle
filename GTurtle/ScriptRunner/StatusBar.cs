@@ -38,23 +38,23 @@ namespace GTurtle
             col.Message = "Col " + column.ToString();
         }
 
-        public void SetGlobalStatusMessage(GlobalStatus gs)
+        public void SetGlobalStatusMessage(ScriptStatus gs)
         {
             switch(gs)
             {
-                case GlobalStatus.Editing:
+                case ScriptStatus.Editing:
                     globalStatusMessage.Message = "Editing";
                     break;
 
-                case GlobalStatus.Running:
+                case ScriptStatus.Running:
                     globalStatusMessage.Message = "Running";
                     break;
 
-                case GlobalStatus.Paused:
+                case ScriptStatus.Paused:
                     globalStatusMessage.Message = "Paused";
                     break;
 
-                case GlobalStatus.ExecutionError:
+                case ScriptStatus.ExecutionError:
                     globalStatusMessage.Message = "Execution Error";
                     break;
 
