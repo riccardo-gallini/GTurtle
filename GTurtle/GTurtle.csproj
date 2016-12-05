@@ -145,6 +145,10 @@
     <Compile Include="ScriptRunner\Script\ScriptView.cs" />
     <Compile Include="ScriptRunner\Script\ScriptViewModel.cs" />
     <Compile Include="ScriptRunner\StatusBar.cs" />
+    <Compile Include="ScriptRunner\Watch\WatchItem.cs" />
+    <Compile Include="ScriptRunner\Watch\WatchView.xaml.cs">
+      <DependentUpon>WatchView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScriptRunner\Watch\WatchViewModel.cs" />
     <Compile Include="Turtle\TurtleAreaView.xaml.cs">
       <DependentUpon>TurtleAreaView.xaml</DependentUpon>
@@ -190,6 +194,10 @@
     <EmbeddedResource Include="Turtle\newscript.py" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ScriptRunner\Watch\WatchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Turtle\TurtleAreaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,9 +221,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -54,6 +54,7 @@ namespace GTurtle
 
             //watch tool
             Watch = new WatchViewModel();
+            Shell.ShowTool(Watch);
 
             //show the turtle surface
             TurtleArea = new TurtleAreaViewModel();

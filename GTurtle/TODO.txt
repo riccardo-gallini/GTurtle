@@ -10,7 +10,8 @@
 	* Comment / uncomment
 	* Indent / outdent
 	- new icons please
-- Reimplement WATCH for wpf
+-- Build WATCH with events coming from ENGINE
+
 - Reimplement better STATUS BAR
 - Area object => clear
 - Turtle object => clear
