@@ -62,8 +62,10 @@ namespace GTurtle
             //show the turtle surface
             TurtleArea = IoC.Get<TurtleAreaViewModel>();
             Shell.ShowTool(TurtleArea);
+            
+            MainWindow.Title = "GTurtle";
         }
-
+        
         public ParserService CreateParserService()
         {
             return this.GScriptEngine.CreateParserService();

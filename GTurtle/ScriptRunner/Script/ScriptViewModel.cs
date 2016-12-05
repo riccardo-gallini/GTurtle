@@ -2,9 +2,9 @@
 using Gemini.Framework;
 using Gemini.Framework.Commands;
 using Gemini.Modules.ErrorList;
+using Gemini.Modules.Shell.Commands;
 using GScripting;
 using GTurtle.Commands;
-using ICSharpCode.AvalonEdit.Document;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Gemini.Framework.Services;
 
 namespace GTurtle
 {
@@ -123,6 +124,8 @@ namespace GTurtle
         protected override Task DoLoad(string filePath)
         {
             _view.editor.Load(filePath);
+            _view.editor.IsModified = false;
+            this.IsDirty = false;
             return Task.CompletedTask;
         }
         
@@ -136,7 +139,43 @@ namespace GTurtle
             _view.editor.Save(filePath);
             return Task.CompletedTask;
         }
-        
+
+        public async override void CanClose(Action<bool> callback)
+        {
+            bool continue_closing = true;
+
+            if (this.IsDirty)
+            {
+                var prompt = string.Format("There are unsaved changes in document {0}.\n\nDo you want to save them?", this.DisplayName);
+                var title = IoC.Get<IMainWindow>().Title;
+                var result = MessageBox.Show(prompt, title, MessageBoxButton.YesNoCancel);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    //save
+                    var save_handler = this as ICommandHandler<SaveFileCommandDefinition>;
+                    await save_handler?.Run(new Command(new SaveFileCommandDefinition()));
+
+                    continue_closing = true;
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    continue_closing = true;
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    continue_closing = false;
+                }
+            }
+            else
+            {
+                continue_closing = true;
+            }
+
+            callback(continue_closing);
+        }
+
+
         #endregion
 
         #region DEBUGGING
@@ -294,6 +333,8 @@ namespace GTurtle
 
         #endregion
         
+        
+
         protected override void OnActivate()
         {
             executionService?.UpdateWatch();
