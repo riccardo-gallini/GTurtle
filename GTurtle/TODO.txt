@@ -1,7 +1,6 @@
 ﻿A) Experience:
 -------------------------------------------------
 - Close modified file (gemini)
-- Opening app: new script & turtle area already open
 - Code context menu: Copy/Paste
 - Toolbar:
 	* Save
@@ -10,7 +9,6 @@
 	* Comment / uncomment
 	* Indent / outdent
 	- new icons please
--- Build WATCH with events coming from ENGINE
 
 - Reimplement better STATUS BAR
 - Area object => clear
@@ -20,8 +18,6 @@
 - Grid/crosshair w/coordinates in turtle area
 - Scrollbox
 - Colors (Color.White) and code-completion
-
-- Dev: try binding for debugmarks & breakpoints
 
 B) Debugging:
 -------------------------------------------------
