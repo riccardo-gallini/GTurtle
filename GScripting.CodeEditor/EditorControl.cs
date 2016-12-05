@@ -20,8 +20,24 @@ namespace GScripting.CodeEditor
 {
     public class EditorControl : TextEditor
     {
-        
-        public ParseInfo ParseInfo { get; private set; }
+
+        private ParseInfo parseInfo;
+
+        public ParseInfo ParseInfo {
+            get
+            {
+                return parseInfo;
+            }
+            set
+            {
+                parseInfo = value;
+                this.RemoveAllErrorMarks();
+                foreach (var err in parseInfo.Errors)
+                {
+                    this.MarkError(err.SpanStartIndex, err.SpanLength, err.Message);
+                }
+            }
+        }
 
         public EditorControl() : base()
         {
@@ -66,20 +82,7 @@ namespace GScripting.CodeEditor
             //textEditor.TextArea.IndentationStrategy
 
         }
-        
-        public void SetParseInfo(ParseInfo info)
-        {
-            ParseInfo = info;
-            
-            this.RemoveAllErrorMarks();
-
-            foreach (var err in info.Errors)
-            {
-                this.MarkError(err.SpanStartIndex, err.SpanLength, err.Message);
-            }
-        }
-
-
+     
         #region " Breakpoints "
 
         IconBarManager bookmarkMargin;
@@ -128,8 +131,7 @@ namespace GScripting.CodeEditor
                 }
             }
         }
-
-
+        
         #endregion
 
         #region " Markers "

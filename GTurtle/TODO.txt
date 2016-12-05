@@ -1,8 +1,6 @@
 ﻿A) Experience:
 -------------------------------------------------
-- Window management ==> use WeifenLuo docking manager <OK>
-- File load/save/save as.. <OK>
-- Bigger surface and scrolling (page size page) ==> use ImageBox from Cyotek <OK>
+- Close modified file (gemini)
 - Code context menu: Copy/Paste
 - Toolbar:
 	* Save
@@ -10,40 +8,35 @@
 	* Play
 	* Comment / uncomment
 	* Indent / outdent
+	- new icons please
 
+- Reimplement better STATUS BAR
+- Area object => clear
+- Turtle object => clear
+
+- Toolbar commands for turtle area: clear - zoom in - zoom out - save
+- Grid/crosshair w/coordinates in turtle area
+- Scrollbox
 - Colors (Color.White) and code-completion
 
-
-B) Errors:
+B) Debugging:
 -------------------------------------------------
-- Errors window for editing <OK>
-- Continuous compilation & error marking on code <OK>
+- Local scope vs. global scope in watch
+- Correct implementation of step into / step over / step out inside ExecutionContext (w/breakpoints)
 
 
 C) Debugging & helps:
 -------------------------------------------------
 - Help for commands
-- Error sink during execution < show errors? stop and debugging...>
-- Scope window during debugging
-- Debugging
-- Toolbar/2:
-	* Play into
-	* Stop
-- Breakpoints
+
+D) Separate scripting module from turtle module 
+
+D) Well...
+-------------------------------------------------
 - Code folding
 - Edit & continue ????
-
 - Text size for editor
 
 
 
 
-
----------------------------------
-
--
-- filename shown - * on modified
-- save as..
-- new icons please
-- better resolution or "vectorized"
-- 
