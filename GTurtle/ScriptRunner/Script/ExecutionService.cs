@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GTurtle
 {
-    public class ExecutionService
+    internal class ExecutionService
     {
         public ScriptViewModel RunningScript { get; private set; }
         private ScriptRunnerModule module;
@@ -110,7 +110,7 @@ namespace GTurtle
 
         private string getSource()
         {
-            return RunningScript.Text;
+            return RunningScript.GetSource();
         }
 
         private void outputUpdateUI(string value)
@@ -121,7 +121,7 @@ namespace GTurtle
         private void debuggerStep(DebugInfo info)
         {
             RunningScript.MarkDebugLine(info.CurrentLine, isError: false);
-            module.Watch.ShowScope(info.ExecutionScope);
+            UpdateWatch();
             RunningScript.Status = ScriptStatus.Paused;
         }
 
@@ -133,16 +133,24 @@ namespace GTurtle
         private void errorUpdateUI(DebugInfo info)
         {
             RunningScript.MarkDebugLine(info.CurrentLine, info.IsError, message: info.Message);
-            module.Watch.ShowScope(info.ExecutionScope);
+            UpdateWatch();
             RunningScript.Status = ScriptStatus.ExecutionError;
         }
 
         private void scriptEndUpdateUI(DebugInfo info)
         {
+            module.Watch.Clear();
             RunningScript.Status = ScriptStatus.Editing;
         }
 
-
+        internal void UpdateWatch()
+        {
+            if (executionContext!=null)
+            {
+                module.Watch.ShowScope(executionContext);
+            }
+            
+        }
        
     }
 }

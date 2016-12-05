@@ -4,6 +4,7 @@ using Gemini.Framework.Commands;
 using Gemini.Modules.ErrorList;
 using GScripting;
 using GTurtle.Commands;
+using ICSharpCode.AvalonEdit.Document;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -35,24 +36,28 @@ namespace GTurtle
         {
             get
             {
-                return _view.Dispatcher.Invoke(()=>_view.Text);
+                return _view.editor.Text;
             }
-        }
 
+        }
+        
         ScriptView _view;
         protected override void OnViewReady(object view)
         {
             _view = (ScriptView)view;
 
-            _view.TextChanged += textChanged;
+            _view.editor.TextChanged += textChanged;
+
+            //text for new
+            _view.editor.Text = TurtleScript.NewTurtleScript();
 
             //manage dropping image files on code text in order to import an image command
-            _view.RegisterDropDataFormat(System.Windows.DataFormats.FileDrop);
-            _view.GetDropData = getTextFromDataObject;
+            _view.editor.RegisterDropDataFormat(DataFormats.FileDrop);
+            _view.editor.GetDropData = getTextFromDataObject;
 
             //parser service
             parserService = IoC.Get<ScriptRunnerModule>().CreateParserService();
-            parserService.RegisterGetSource(getSource);
+            parserService.RegisterGetSource(GetSource);
             parserService.RegisterOnParseFinished(parseFinished);
             parserService.Start();
 
@@ -65,19 +70,19 @@ namespace GTurtle
 
         private void textChanged(object sender, EventArgs e)
         {
-            this.IsDirty = _view.IsModified;
+            this.IsDirty = _view.editor.IsModified;
         }
 
         #region PARSING
 
-        private string getSource()
+        public string GetSource()
         {
-            return _view.Dispatcher.Invoke(() => _view.Text);
+            return _view.Dispatcher.Invoke(() => _view.editor.Text);
         }
 
         private void parseFinished(ParseInfo info)
         {
-            _view.Dispatcher.Invoke(() => _view.ParseInfo = info);
+            _view.Dispatcher.Invoke(() => _view.editor.ParseInfo = info);
 
             var errorList = IoC.Get<IErrorList>();
             errorList.Items.Clear();
@@ -88,7 +93,7 @@ namespace GTurtle
                                   line: err.Line,
                                   path: this.DisplayName,
                                   column: err.Column,
-                                  onClick: () => _view.NavigateToLine(err.Line));
+                                  onClick: () => _view.editor.NavigateToLine(err.Line));
             }
         }
 
@@ -117,19 +122,18 @@ namespace GTurtle
 
         protected override Task DoLoad(string filePath)
         {
-            _view.Load(filePath);
+            _view.editor.Load(filePath);
             return Task.CompletedTask;
         }
         
         protected override Task DoNew()
         {
-            _view.Text = TurtleScript.NewTurtleScript();
             return Task.CompletedTask;
         }
 
         protected override Task DoSave(string filePath)
         {
-            _view.Save(filePath);
+            _view.editor.Save(filePath);
             return Task.CompletedTask;
         }
         
@@ -139,17 +143,17 @@ namespace GTurtle
 
         public void MarkDebugLine(int currentLine, bool isError, string message = "")
         {
-            _view.Dispatcher.Invoke(()=>_view.MarkDebugLine(currentLine, isError, message));
+            _view.Dispatcher.Invoke(() => _view.editor.MarkDebugLine(currentLine, isError, message));
         }
 
         public void RemoveAllDebugMarks()
         {
-            _view.Dispatcher.Invoke(() => _view.RemoveAllDebugMarks());
+            _view.Dispatcher.Invoke(() => _view.editor.RemoveAllDebugMarks());
         }
 
         public IBreakpoint GetBreakpoint(int line)
         {
-            return _view.Dispatcher.Invoke(()=>_view.GetBreakpoint(line));
+            return _view.Dispatcher.Invoke(()=>_view.editor.GetBreakpoint(line));
         }
 
         #endregion
@@ -158,7 +162,7 @@ namespace GTurtle
 
         Task ICommandHandler<ToggleBreakpoint>.Run(Command command)
         {
-            _view.ToggleBreakpoint();
+            _view.editor.ToggleBreakpoint();
             return Task.CompletedTask;
         }
 
@@ -289,10 +293,11 @@ namespace GTurtle
         }
 
         #endregion
-
-        protected override void OnDeactivate(bool close)
+        
+        protected override void OnActivate()
         {
-            parserService.Stop();
+            executionService?.UpdateWatch();
+            base.OnActivate();
         }
 
         #region "DROP IMG FILES INTO SCRIPT"

@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Gemini.Framework.Services;
 using GScripting;
 using Caliburn.Micro;
+using System.ComponentModel.Composition;
 
 namespace GTurtle
 {
+    [Export(typeof(WatchViewModel))]
     public class WatchViewModel : Tool
     {
         public override PaneLocation PreferredLocation
@@ -51,10 +53,14 @@ namespace GTurtle
             this.Items.Add(wi);
         }
 
+        public void Clear()
+        {
+            this.Items.Clear();
+        }
 
         public void ShowScope(ExecutionContext info)
         {
-            this.Items.Clear();
+            this.Clear();
             foreach (var v in info.GetVariables())
             {
                 this.AddItem(v.Name, v.Value, v.Type);

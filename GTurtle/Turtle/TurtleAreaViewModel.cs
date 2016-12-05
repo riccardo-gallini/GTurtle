@@ -5,22 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Gemini.Framework.Services;
+using System.ComponentModel.Composition;
 
 namespace GTurtle
 {
-    public class TurtleAreaViewModel : Document
+    [Export(typeof(TurtleAreaViewModel))]
+    public class TurtleAreaViewModel : Tool
     {
-        TurtleAreaView _view;
+        private TurtleAreaView _view
+        {
+            get
+            {
+                return (this.GetView() as TurtleAreaView);
+            }
+        }
+
 
         public TurtleAreaViewModel()
         {
             this.DisplayName = "TURTLE SURFACE";
-        }
-
-        protected override void OnViewReady(object view)
-        {
-            _view = (TurtleAreaView)view;
-            base.OnViewReady(view);
         }
 
         public void Clear()
@@ -60,5 +64,12 @@ namespace GTurtle
             }
         }
 
+        public override PaneLocation PreferredLocation
+        {
+            get
+            {
+                return PaneLocation.Right;
+            }
+        }
     }
 }

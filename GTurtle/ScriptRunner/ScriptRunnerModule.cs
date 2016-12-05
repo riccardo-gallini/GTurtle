@@ -28,8 +28,6 @@ namespace GTurtle
         public IErrorList ErrorList { get; private set; }
         public WatchViewModel Watch { get; private set; }
         
-        public ScriptStatus CurrentStatus { get; set; }
-
         //TODO: move away from here ==> have an all new turtle module
         public TurtleAreaViewModel TurtleArea { get; private set; }
 
@@ -53,12 +51,17 @@ namespace GTurtle
             Shell.ShowTool(Output);
 
             //watch tool
-            Watch = new WatchViewModel();
+            Watch = IoC.Get<WatchViewModel>();
             Shell.ShowTool(Watch);
 
+            //show a new doc
+            var doc = new ScriptViewModel();
+            doc.New("Untitled.py");
+            Shell.OpenDocument(doc);
+
             //show the turtle surface
-            TurtleArea = new TurtleAreaViewModel();
-            Shell.OpenDocument(TurtleArea);
+            TurtleArea = IoC.Get<TurtleAreaViewModel>();
+            Shell.ShowTool(TurtleArea);
         }
 
         public ParserService CreateParserService()
