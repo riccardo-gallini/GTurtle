@@ -9,7 +9,7 @@ using GScripting;
 using Caliburn.Micro;
 using System.ComponentModel.Composition;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     [Export(typeof(WatchViewModel))]
     public class WatchViewModel : Tool

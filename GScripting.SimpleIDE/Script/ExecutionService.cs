@@ -1,5 +1,4 @@
 ﻿using GScripting;
-using GTurtle.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -7,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     internal class ExecutionService
     {
         public ScriptViewModel RunningScript { get; private set; }
-        private ScriptRunnerModule module;
+        private SimpleIDEModule module;
         private ExecutionContext executionContext;
     
-        internal ExecutionService(ScriptViewModel script, ScriptRunnerModule scriptRunnerModule)
+        internal ExecutionService(ScriptViewModel script, SimpleIDEModule scriptRunnerModule)
         {
             RunningScript = script;
             module = scriptRunnerModule;

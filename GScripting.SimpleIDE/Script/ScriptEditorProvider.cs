@@ -7,7 +7,7 @@ using Caliburn.Micro;
 using Gemini.Framework;
 using Gemini.Framework.Services;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     [Export(typeof(IEditorProvider))]
     public class ScriptEditorProvider : IEditorProvider

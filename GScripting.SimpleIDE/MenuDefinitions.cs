@@ -2,7 +2,7 @@
 using Gemini.Framework.Menus;
 using Gemini.Framework.ToolBars;
 using Gemini.Modules.MainMenu;
-using GTurtle.Commands;
+using GScripting.SimpleIDE.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     public static class ExecuteMenuDefinitions
     {

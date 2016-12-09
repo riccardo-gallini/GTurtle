@@ -4,7 +4,7 @@ using Gemini.Framework.Commands;
 using Gemini.Modules.ErrorList;
 using Gemini.Modules.Shell.Commands;
 using GScripting;
-using GTurtle.Commands;
+using GScripting.SimpleIDE.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Gemini.Framework.Services;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     [CommandHandler]
     public class ScriptViewModel : PersistedDocument,
@@ -57,12 +57,12 @@ namespace GTurtle
             _view.editor.GetDropData = getTextFromDataObject;
 
             //parser service
-            parserService = IoC.Get<ScriptRunnerModule>().CreateParserService();
+            parserService = IoC.Get<SimpleIDEModule>().CreateParserService();
             parserService.RegisterGetSource(GetSource);
             parserService.RegisterOnParseFinished(parseFinished);
             parserService.Start();
 
-            executionService = new ExecutionService(this, IoC.Get<ScriptRunnerModule>());
+            executionService = new ExecutionService(this, IoC.Get<SimpleIDEModule>());
 
             this.Status = ScriptStatus.Editing;
 

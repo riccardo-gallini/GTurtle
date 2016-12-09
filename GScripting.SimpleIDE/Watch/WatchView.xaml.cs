@@ -13,16 +13,22 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     /// <summary>
-    /// Interaction logic for ScriptView.xaml
+    /// Interaction logic for WatchView.xaml
     /// </summary>
-    public partial class ScriptView : UserControl
+    public partial class WatchView : UserControl
     {
-        public ScriptView()
+        public WatchView()
         {
             InitializeComponent();
         }
+
+        public void DataGridMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
     }
 }

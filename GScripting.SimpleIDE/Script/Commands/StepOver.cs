@@ -1,20 +1,22 @@
 ﻿using Gemini.Framework.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace GTurtle.Commands
+namespace GScripting.SimpleIDE.Commands
 {
     [CommandDefinition]
-    public class StepOut : CommandDefinition
+    public class StepOver : CommandDefinition
     {
         public override string Name
         {
             get
             {
-                return "Execution.StepOut";
+                return "Execution.StepOver";
             }
         }
 
@@ -22,7 +24,7 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Step Out";
+                return "Step Over";
             }
         }
 
@@ -30,9 +32,13 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Step Out";
+                return "Step Over";
             }
         }
+
+        [Export]
+        public static CommandKeyboardShortcut StepOverShortcut = new CommandKeyboardShortcut<StepOver>(new KeyGesture(Key.F10));
+
     }
 
 }
