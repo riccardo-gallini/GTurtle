@@ -27,10 +27,11 @@ namespace GScripting.SimpleIDE
         public IErrorList ErrorList { get; private set; }
         public WatchViewModel Watch { get; private set; }
         
-
-
         public override void Initialize()
         {
+            //viewlocator with base classes
+            initViewLocator();
+            
             //create scripting engine
             GScriptEngine = new Engine();
 
@@ -60,6 +61,21 @@ namespace GScripting.SimpleIDE
 
         }
         
+        private void initViewLocator()
+        {
+            var defaultLocator = ViewLocator.LocateTypeForModelType;
+            ViewLocator.LocateTypeForModelType = (modelType, displayLocation, context) =>
+            {
+                var viewType = defaultLocator(modelType, displayLocation, context);
+                while (viewType == null && modelType != typeof(object))
+                {
+                    modelType = modelType.BaseType;
+                    viewType = defaultLocator(modelType, displayLocation, context);
+                }
+                return viewType;
+            };
+        }
+
         public ParserService CreateParserService()
         {
             return this.GScriptEngine.CreateParserService();

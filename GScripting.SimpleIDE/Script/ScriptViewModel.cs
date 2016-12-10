@@ -30,7 +30,9 @@ namespace GScripting.SimpleIDE
     {
         ParserService parserService;
         ExecutionService executionService;
-        
+
+        public IDictionary<string, object> Scope = new Dictionary<string, object>();
+
         public ScriptStatus Status { get; internal set;}
 
         public string Text
@@ -39,9 +41,13 @@ namespace GScripting.SimpleIDE
             {
                 return _view.editor.Text;
             }
-
         }
         
+        protected virtual string NewScriptText()
+        {
+            return string.Empty;
+        }
+
         ScriptView _view;
         protected override void OnViewReady(object view)
         {
@@ -49,8 +55,7 @@ namespace GScripting.SimpleIDE
 
             _view.editor.TextChanged += textChanged;
 
-            //text for new
-            _view.editor.Text = TurtleScript.NewTurtleScript();
+            _view.editor.Text = NewScriptText();
 
             //manage dropping image files on code text in order to import an image command
             _view.editor.RegisterDropDataFormat(DataFormats.FileDrop);

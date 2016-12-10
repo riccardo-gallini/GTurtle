@@ -122,6 +122,7 @@
       <DependentUpon>ScriptView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Script\ScriptViewModel.cs" />
+    <Compile Include="StatusBar.cs" />
     <Compile Include="Watch\WatchItem.cs" />
     <Compile Include="Watch\WatchView.xaml.cs">
       <DependentUpon>WatchView.xaml</DependentUpon>

@@ -90,6 +90,7 @@ namespace GScripting.SimpleIDE
             executionContext.RegisterOnError(errorUpdateUI);
             executionContext.RegisterOnScriptEnd(scriptEndUpdateUI);
             executionContext.RegisterOnStop(scriptEndUpdateUI);
+            executionContext.AddToScope(RunningScript.Scope);
             registerUtilityCommands(executionContext);
 
             if (requestPause) { executionContext.RequestPause(); }
@@ -98,15 +99,14 @@ namespace GScripting.SimpleIDE
             await executionContext.RunAsync();
 
         }
-        
+
         private void registerUtilityCommands(ExecutionContext executionContext)
         {
-            executionContext.RegisterCommand("createturtle", new Func<Turtle>(module.CreateTurtle));
-            executionContext.RegisterCommand("sleep", new Action<int>((t) => executionContext.Sleep(t)));
-            executionContext.RegisterCommand("stop", new Action(() => executionContext.Stop()));
-            executionContext.RegisterCommand("pause", new Action(() => executionContext.RequestPause()));
+            executionContext.AddToScope("sleep", new Action<int>((t) => executionContext.Sleep(t)));
+            executionContext.AddToScope("stop", new Action(() => executionContext.Stop()));
+            executionContext.AddToScope("pause", new Action(() => executionContext.RequestPause()));
         }
-
+               
         private string getSource()
         {
             return RunningScript.GetSource();

@@ -12,31 +12,31 @@ namespace GScripting.SimpleIDE
     [Export(typeof(IEditorProvider))]
     public class ScriptEditorProvider : IEditorProvider
     {
-        public IEnumerable<EditorFileType> FileTypes
+        public virtual IEnumerable<EditorFileType> FileTypes
         {
             get
             {
-                yield return new EditorFileType("GTurtle Python Script", ".py");
+                yield return new EditorFileType("Python Script", ".py");
             }
         }
 
-        public bool Handles(string path)
+        public virtual bool Handles(string path)
         {
             var extension = Path.GetExtension(path);
             return extension == ".py";
         }
 
-        public IDocument Create()
+        public virtual IDocument Create()
         {
             return new ScriptViewModel();
         }
 
-        public async Task New(IDocument document, string name)
+        public virtual async Task New(IDocument document, string name)
         {
             await ((ScriptViewModel)document).New(name);
         }
 
-        public async Task Open(IDocument document, string path)
+        public virtual async Task Open(IDocument document, string path)
         {
             await ((ScriptViewModel)document).Load(path);
         }

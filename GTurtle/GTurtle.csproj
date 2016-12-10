@@ -111,7 +111,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="GTurtleModule.cs" />
-    <Compile Include="StatusBar.cs" />
+    <Compile Include="TurtleScriptEditorProvider.cs" />
+    <Compile Include="TurtleScriptViewModel.cs" />
     <Compile Include="Turtle\TurtleAreaView.xaml.cs">
       <DependentUpon>TurtleAreaView.xaml</DependentUpon>
     </Compile>
