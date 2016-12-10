@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GTurtle.Commands
+namespace GScripting.SimpleIDE.Commands
 {
     [CommandDefinition]
     public class Pause : CommandDefinition

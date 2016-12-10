@@ -4,7 +4,7 @@ using Gemini.Framework.Commands;
 using Gemini.Modules.ErrorList;
 using Gemini.Modules.Shell.Commands;
 using GScripting;
-using GTurtle.Commands;
+using GScripting.SimpleIDE.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Gemini.Framework.Services;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     [CommandHandler]
     public class ScriptViewModel : PersistedDocument,
@@ -30,7 +30,9 @@ namespace GTurtle
     {
         ParserService parserService;
         ExecutionService executionService;
-        
+
+        public IDictionary<string, object> Scope = new Dictionary<string, object>();
+
         public ScriptStatus Status { get; internal set;}
 
         public string Text
@@ -39,9 +41,13 @@ namespace GTurtle
             {
                 return _view.editor.Text;
             }
-
         }
         
+        protected virtual string NewScriptText()
+        {
+            return string.Empty;
+        }
+
         ScriptView _view;
         protected override void OnViewReady(object view)
         {
@@ -49,20 +55,19 @@ namespace GTurtle
 
             _view.editor.TextChanged += textChanged;
 
-            //text for new
-            _view.editor.Text = TurtleScript.NewTurtleScript();
+            _view.editor.Text = NewScriptText();
 
             //manage dropping image files on code text in order to import an image command
             _view.editor.RegisterDropDataFormat(DataFormats.FileDrop);
             _view.editor.GetDropData = getTextFromDataObject;
 
             //parser service
-            parserService = IoC.Get<ScriptRunnerModule>().CreateParserService();
+            parserService = IoC.Get<SimpleIDEModule>().CreateParserService();
             parserService.RegisterGetSource(GetSource);
             parserService.RegisterOnParseFinished(parseFinished);
             parserService.Start();
 
-            executionService = new ExecutionService(this, IoC.Get<ScriptRunnerModule>());
+            executionService = new ExecutionService(this, IoC.Get<SimpleIDEModule>());
 
             this.Status = ScriptStatus.Editing;
 

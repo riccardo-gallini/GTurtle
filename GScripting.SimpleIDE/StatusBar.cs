@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     public class StatusBar
     {

@@ -4,7 +4,6 @@ using Gemini.Framework.Commands;
 using Gemini.Modules.ErrorList;
 using Gemini.Modules.Output;
 using GScripting;
-using GTurtle.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -15,11 +14,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace GTurtle
+namespace GScripting.SimpleIDE
 {
     [Export(typeof(IModule))]
-    [Export(typeof(ScriptRunnerModule))]
-    public class ScriptRunnerModule : ModuleBase
+    [Export(typeof(SimpleIDEModule))]
+    public class SimpleIDEModule : ModuleBase
 
     {
         public Engine GScriptEngine { get; private set; }
@@ -28,11 +27,11 @@ namespace GTurtle
         public IErrorList ErrorList { get; private set; }
         public WatchViewModel Watch { get; private set; }
         
-        //TODO: move away from here ==> have an all new turtle module
-        public TurtleAreaViewModel TurtleArea { get; private set; }
-
         public override void Initialize()
         {
+            //viewlocator with base classes
+            initViewLocator();
+            
             //create scripting engine
             GScriptEngine = new Engine();
 
@@ -54,18 +53,23 @@ namespace GTurtle
             Watch = IoC.Get<WatchViewModel>();
             Shell.ShowTool(Watch);
 
-            //show a new doc
-            var doc = new ScriptViewModel();
-            doc.New("Untitled.py");
-            Shell.OpenDocument(doc);
-
-            //show the turtle surface
-            TurtleArea = IoC.Get<TurtleAreaViewModel>();
-            Shell.ShowTool(TurtleArea);
-            
-            MainWindow.Title = "GTurtle";
         }
         
+        private void initViewLocator()
+        {
+            var defaultLocator = ViewLocator.LocateTypeForModelType;
+            ViewLocator.LocateTypeForModelType = (modelType, displayLocation, context) =>
+            {
+                var viewType = defaultLocator(modelType, displayLocation, context);
+                while (viewType == null && modelType != typeof(object))
+                {
+                    modelType = modelType.BaseType;
+                    viewType = defaultLocator(modelType, displayLocation, context);
+                }
+                return viewType;
+            };
+        }
+
         public ParserService CreateParserService()
         {
             return this.GScriptEngine.CreateParserService();
@@ -76,10 +80,7 @@ namespace GTurtle
             return this.GScriptEngine.CreateExecutionContext();
         }
 
-        public Turtle CreateTurtle()
-        {
-            return new Turtle(TurtleArea);
-        }
+       
         
     }
 

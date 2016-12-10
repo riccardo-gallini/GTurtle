@@ -7,16 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace GTurtle.Commands
+namespace GScripting.SimpleIDE.Commands
 {
     [CommandDefinition]
-    public class ToggleBreakpoint : CommandDefinition
+    public class StepInto : CommandDefinition
     {
         public override string Name
         {
             get
             {
-                return "Editor.ToggleBreakpoint";
+                return "Execution.StepInto";
             }
         }
 
@@ -24,7 +24,7 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Toggle Breakpoint";
+                return "Step Into";
             }
         }
 
@@ -32,14 +32,13 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Toggle Breakpoint";
+                return "Step Into";
             }
         }
 
         [Export]
-        public static CommandKeyboardShortcut ToggleBreakpointShortcut = new CommandKeyboardShortcut<ToggleBreakpoint>(new KeyGesture(Key.F9));
+        public static CommandKeyboardShortcut StepIntoShortcut = new CommandKeyboardShortcut<StepInto>(new KeyGesture(Key.F11));
 
     }
 
 }
-

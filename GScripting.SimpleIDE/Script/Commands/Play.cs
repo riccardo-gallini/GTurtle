@@ -1,19 +1,22 @@
 ﻿using Gemini.Framework.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace GTurtle.Commands.Editor
+namespace GScripting.SimpleIDE.Commands
 {
-    public class NewScript : CommandDefinition
+    [CommandDefinition]
+    public class Play : CommandDefinition
     {
         public override string Name
         {
             get
             {
-                return "Editor.NewScript";
+                return "Execution.Play";
             }
         }
 
@@ -21,7 +24,7 @@ namespace GTurtle.Commands.Editor
         {
             get
             {
-                return "New Script";
+                return "Play";
             }
         }
 
@@ -29,18 +32,12 @@ namespace GTurtle.Commands.Editor
         {
             get
             {
-                return "New Script";
+                return "Play";
             }
         }
 
-    }
+        [Export]
+        public static CommandKeyboardShortcut PlayShortcut = new CommandKeyboardShortcut<Play>(new KeyGesture(Key.F5));
 
-    public class NewScriptCommandHandler : CommandHandlerBase<NewScript>
-    {
-        public override Task Run(Command command)
-        {
-
-            return Task.CompletedTask;
-        }
     }
 }

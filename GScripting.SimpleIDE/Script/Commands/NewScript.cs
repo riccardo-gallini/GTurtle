@@ -5,16 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GTurtle.Commands
+namespace GScripting.SimpleIDE.Commands
 {
-    [CommandDefinition]
-    public class Stop : CommandDefinition
+    public class NewScript : CommandDefinition
     {
         public override string Name
         {
             get
             {
-                return "Execution.Stop";
+                return "Editor.NewScript";
             }
         }
 
@@ -22,7 +21,7 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Stop";
+                return "New Script";
             }
         }
 
@@ -30,10 +29,18 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Stop";
+                return "New Script";
             }
         }
 
     }
-    
+
+    public class NewScriptCommandHandler : CommandHandlerBase<NewScript>
+    {
+        public override Task Run(Command command)
+        {
+
+            return Task.CompletedTask;
+        }
+    }
 }

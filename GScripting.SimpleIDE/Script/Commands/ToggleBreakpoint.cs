@@ -7,16 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace GTurtle.Commands
+namespace GScripting.SimpleIDE.Commands
 {
     [CommandDefinition]
-    public class Play : CommandDefinition
+    public class ToggleBreakpoint : CommandDefinition
     {
         public override string Name
         {
             get
             {
-                return "Execution.Play";
+                return "Editor.ToggleBreakpoint";
             }
         }
 
@@ -24,7 +24,7 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Play";
+                return "Toggle Breakpoint";
             }
         }
 
@@ -32,12 +32,14 @@ namespace GTurtle.Commands
         {
             get
             {
-                return "Play";
+                return "Toggle Breakpoint";
             }
         }
 
         [Export]
-        public static CommandKeyboardShortcut PlayShortcut = new CommandKeyboardShortcut<Play>(new KeyGesture(Key.F5));
+        public static CommandKeyboardShortcut ToggleBreakpointShortcut = new CommandKeyboardShortcut<ToggleBreakpoint>(new KeyGesture(Key.F9));
 
     }
+
 }
+
