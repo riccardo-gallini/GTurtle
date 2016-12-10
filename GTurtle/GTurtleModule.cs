@@ -21,13 +21,16 @@ namespace GTurtle
 
         public override void Initialize()
         {
+            MainWindow.Title = "GTurtle";
 
             //show the turtle surface
             TurtleArea = IoC.Get<TurtleAreaViewModel>();
             Shell.ShowTool(TurtleArea);
-            
-            MainWindow.Title = "GTurtle";
 
+            //show a new doc
+            var doc = new TurtleScriptViewModel();
+            doc.New("Untitled.pyt");
+            Shell.OpenDocument(doc);
         }
 
         public Turtle CreateTurtle()

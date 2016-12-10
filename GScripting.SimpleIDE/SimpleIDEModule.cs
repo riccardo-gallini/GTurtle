@@ -53,12 +53,6 @@ namespace GScripting.SimpleIDE
             Watch = IoC.Get<WatchViewModel>();
             Shell.ShowTool(Watch);
 
-            //show a new doc
-            var doc = new ScriptViewModel();
-            doc.New("Untitled.py");
-            Shell.OpenDocument(doc);
-            
-
         }
         
         private void initViewLocator()

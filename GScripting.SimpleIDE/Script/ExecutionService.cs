@@ -63,10 +63,12 @@ namespace GScripting.SimpleIDE
         {
             if (RunningScript.Status == ScriptStatus.Running || RunningScript.Status == ScriptStatus.Paused)
             {
+                RunningScript.RemoveAllDebugMarks();
                 executionContext.Stop();
             }
             else if (RunningScript.Status == ScriptStatus.ExecutionError)
             {
+                RunningScript.RemoveAllDebugMarks();
                 RunningScript.Status = ScriptStatus.Editing;
             }
             return Task.CompletedTask;
