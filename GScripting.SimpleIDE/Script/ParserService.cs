@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace GScripting
+namespace GScripting.SimpleIDE
 {
     public class ParserService
     {

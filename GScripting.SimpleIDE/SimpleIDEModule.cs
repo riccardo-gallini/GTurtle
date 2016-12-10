@@ -72,7 +72,7 @@ namespace GScripting.SimpleIDE
 
         public ParserService CreateParserService()
         {
-            return this.GScriptEngine.CreateParserService();
+            return new ParserService(GScriptEngine);
         }
 
         public ExecutionContext CreateExecutionContext()

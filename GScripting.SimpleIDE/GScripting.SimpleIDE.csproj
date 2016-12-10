@@ -107,6 +107,7 @@
   <ItemGroup>
     <Compile Include="MenuDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Script\ParserService.cs" />
     <Compile Include="SimpleIDEModule.cs" />
     <Compile Include="Script\Commands\NewScript.cs" />
     <Compile Include="Script\Commands\Pause.cs" />

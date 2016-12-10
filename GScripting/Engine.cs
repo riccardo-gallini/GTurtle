@@ -48,12 +48,6 @@ namespace GScripting
 
         }
 
-        public ParserService CreateParserService()
-        {
-            var parser = new ParserService(this);
-            return parser;
-        }
-
         public ExecutionContext CreateExecutionContext()
         {
             var variableScope = scriptEngine.CreateScope();

@@ -80,7 +80,6 @@
     <Compile Include="Execution\ExecutionContext.cs" />
     <Compile Include="Execution\ExecutionVariable.cs" />
     <Compile Include="Parsing\ParseInfo.cs" />
-    <Compile Include="Parsing\ParserService.cs" />
     <Compile Include="Parsing\ScriptAstWalker.cs" />
     <Compile Include="Parsing\ScriptError.cs" />
     <Compile Include="Parsing\ScriptErrorSink.cs" />
