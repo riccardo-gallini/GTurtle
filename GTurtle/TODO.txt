@@ -37,6 +37,7 @@ D) Well...
 - Edit & continue ????
 - Text size for editor
 
+E)
 
 
 
