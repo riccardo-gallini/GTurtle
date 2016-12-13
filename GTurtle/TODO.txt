@@ -8,7 +8,7 @@
 	* Play
 	* Comment / uncomment
 	* Indent / outdent
-	- new icons please
+	- new icons please; i really need to do that!
 
 - Reimplement better STATUS BAR
 - Area object => clear
