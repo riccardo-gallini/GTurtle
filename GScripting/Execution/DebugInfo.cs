@@ -27,7 +27,7 @@ namespace GScripting
             
             info.ExecutionScope = executionScope;
 
-            ExceptionOperations eo = info.ExecutionScope.Engine.scriptEngine.GetService<ExceptionOperations>();
+            ExceptionOperations eo = info.ExecutionScope.ScriptEngine.GetService<ExceptionOperations>();
 
             string message;
             string errorTypeName;

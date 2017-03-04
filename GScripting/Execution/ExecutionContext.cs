@@ -21,12 +21,16 @@ namespace GScripting
         private bool request_pause = false;
         private bool request_stop = false;
         private AutoResetEvent pause_waiter;
-        private DebugAction next_action;
+        private DebugAction debugger_action;
 
         private Engine _engine;
         private ExecutionStatus _executionStatus;
+        private ExecutionOutput execOutput;
         private string _source;
 
+        public int TraceDepth { get; private set; }
+        public int DebugDepth { get; private set; }
+            
         internal Action<DebugInfo> _debuggerStep;
         internal Action<DebugInfo> _onTrace;
         internal Action<DebugInfo> _onError;
@@ -85,15 +89,15 @@ namespace GScripting
         {
             _getSource = func;
         }
-        
-        public Engine Engine
+
+        internal ScriptEngine ScriptEngine
         {
             get
             {
-                return _engine;
+                return _engine.scriptEngine;
             }
         }
-                
+
         public ExecutionStatus ExecutionStatus
         {
             get
@@ -162,50 +166,55 @@ namespace GScripting
 
         public void StepInto()
         {
-            request_pause = true;
-            next_action = DebugAction.StepInto;
-            resume_execution();
+            debugger_action = DebugAction.StepInto;
+            resume();
         }
 
         public void StepOver()
         {
-            request_pause = true;
-            next_action = DebugAction.StepOver;
-            resume_execution();
+            debugger_action = DebugAction.StepOver;
+            resume();
         }
 
         public void StepOut()
         {
-            request_pause = true;
-            next_action = DebugAction.StepOver;
-            resume_execution();
+            debugger_action = DebugAction.StepOver;
+            resume();
         }
 
         public void Continue()
         {
             request_pause = false;
-            next_action = DebugAction.None;
-            resume_execution();
+            debugger_action = DebugAction.None;
+            resume();
         }
 
-        private void resume_execution()
+        private void resume()
         {
             pause_waiter?.Set();
         }
 
-        private void pause_execution()
+        private void debuggerStepPause(DebugInfo info)
         {
+            _executionStatus = ExecutionStatus.Paused;
+            DebugDepth = TraceDepth;
+
+            _debuggerStep?.Invoke(info);
+
+            //suspend execution waiting for signal
             using (pause_waiter = new AutoResetEvent(false))
             {
                 pause_waiter.WaitOne();
             }
             pause_waiter = null;
+            
+            _executionStatus = ExecutionStatus.InternalTrace;
         }
 
         public void Stop()
         {
             request_stop = true;
-            resume_execution();
+            resume();
         }
 
         public void Sleep(int ms)
@@ -221,15 +230,15 @@ namespace GScripting
         private void runScript()
         {
             _source = _getSource();
-            ScriptSource scriptSource = Engine.scriptEngine.CreateScriptSourceFromString(_source, SourceCodeKind.File);
+            ScriptSource scriptSource = ScriptEngine.CreateScriptSourceFromString(_source, SourceCodeKind.File);
 
-            using (var execOutput = new ExecutionOutput(this))
+            TraceDepth = 0;
+            DebugDepth = 0;
+
+            using (execOutput = new ExecutionOutput(this))
             {
-                var ms = new MemoryStream();
-                Engine.scriptEngine.Runtime.IO.SetOutput(ms, execOutput);
-
                 this._executionStatus = ExecutionStatus.Running;
-                Engine.scriptEngine.SetTrace(this.traceHook);
+                ScriptEngine.SetTrace(this.traceHook);
 
                 try
                 {
@@ -251,7 +260,8 @@ namespace GScripting
                 finally
                 {
                     this._executionStatus = ExecutionStatus.Stopped;
-                    Engine.scriptEngine.SetTrace(null);
+                    
+                    ScriptEngine.SetTrace(null);
                 }
                                 
             }
@@ -266,45 +276,52 @@ namespace GScripting
             }
         }
 
-        private void checkDebuggerPause(DebugInfo info)
-        {
-            if (_debuggerStep==null) { return; }
-            
-            if (request_pause || _onCheckBreakpoint?.Invoke(info.CurrentLine)!=null)
-            {
-                _executionStatus = ExecutionStatus.Paused;
-                _debuggerStep(info);
-                pause_execution();
-               
-                _executionStatus = ExecutionStatus.InternalTrace;
-
-            }
-        }
+        private bool _first = true;
 
         private TracebackDelegate traceHook(TraceBackFrame frame, string result, object payload)
         {
+            //TODO: better management of this hook quirk: first trace is always a call; we miss the first line hook
+            if (result == "call" && _first)
+            {
+                result = "line";
+                _first = false;  
+            }
+
             this._executionStatus = ExecutionStatus.InternalTrace;
             checkDebuggerStop();
 
+            //temp: log on output
+            execOutput.WriteLine(result + " line=" + frame.f_lineno.ToString());
+
+            //send trace to client
             var info = DebugInfo.Create(frame, this);
-            checkDebuggerPause(info);
             _onTrace?.Invoke(info);
 
-            if (next_action == DebugAction.StepInto)
+            if (result == "call") TraceDepth++;
+            if (result == "return") TraceDepth--;
+
+            //decide whether we must pause execution and return control to client ide
+            var must_pause = request_pause;
+
+            if (debugger_action == DebugAction.StepInto)
             {
-                this._executionStatus = ExecutionStatus.Running;
-                return traceHook;
+                must_pause = true;
             }
-            else if (next_action == DebugAction.StepOver)
+            else if (debugger_action == DebugAction.StepOver && TraceDepth<=DebugDepth)
             {
-                this._executionStatus = ExecutionStatus.Running;
-                return null;
+                must_pause = true;
             }
-            else if (next_action == DebugAction.StepOut)
+            else if (debugger_action == DebugAction.StepOut)
             {
-                this._executionStatus = ExecutionStatus.Running;
-                return traceHook;
+
             }
+            else if (_onCheckBreakpoint?.Invoke(info.CurrentLine) != null)
+            {
+                must_pause = true;
+            }
+
+            //
+            if (must_pause) debuggerStepPause(info);
 
             this._executionStatus = ExecutionStatus.Running;
             return traceHook;
